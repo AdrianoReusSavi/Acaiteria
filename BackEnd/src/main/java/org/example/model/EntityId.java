@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class EntityId {
+public abstract class EntityId {
     private Long id;
 
     public Long getId() {
