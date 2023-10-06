@@ -1,10 +1,19 @@
 package org.example.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class Fornecedor extends EntityId {
+    @Column(name = "razao")
     private String razao;
+    @Column(name = "cnpj")
     private String cnpj;
+    @Column(name = "cep")
     private String cep;
+    @Column(name = "uf")
     private String uf;
+    @Column(name = "cidade")
     private String cidade;
 
     //region getters e setters

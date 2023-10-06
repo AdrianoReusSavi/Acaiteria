@@ -1,6 +1,11 @@
 package org.example.model;
 
-public class Status extends EntityId{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
+public class Status extends EntityId {
+    @Column(name = "descricao")
     private String descricao;
 
     public String getDescricao() {

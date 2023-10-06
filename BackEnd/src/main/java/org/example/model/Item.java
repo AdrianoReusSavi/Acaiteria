@@ -1,9 +1,26 @@
 package org.example.model;
 
-public class Item extends EntityId{
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Item extends EntityId {
+
+    @OneToOne
+    @JoinColumn(name = "unidade_medida_id")
+    private UnidadeMedida unidadeMedida;
+
+    @OneToMany(mappedBy = "item")
+    private List<MovimentacaoEstoque> movimentacaoEstoques = new ArrayList<>();
+
+    @Column(name = "descricao")
     private String descricao;
+    @Column(name = "quantidade_estoque")
     private double quantidade_estoque;
+    @Column(name = "preco_compra")
     private double preco_compra;
+    @Column(name = "preco_venda")
     private double preco_venda;
 
     //region getters e setters

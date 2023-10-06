@@ -1,14 +1,34 @@
 package org.example.model;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+@Entity
 public class Compra extends EntityId {
+
+    @OneToOne
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
+
+    @OneToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
+
+    @OneToMany(mappedBy = "compra")
+    private List<CompraItem> compraItems = new ArrayList<>();
+
+    @Column(name = "data")
     private Date data_hora;
-    private int nfe;
+    @Column(name = "nfe_id")
+    private Integer nfe;
+    @Column(name = "frete")
     private double frete;
+    @Column(name = "valor_total")
     private double valor_total;
+    @Column(name = "desconto")
     private double desconto;
-    private int id_fornecedor;
 
     //region getters e setters
     public Date getData_hora() {
@@ -51,12 +71,12 @@ public class Compra extends EntityId {
         this.desconto = desconto;
     }
 
-    public int getId_fornecedor() {
-        return id_fornecedor;
+    public Fornecedor getFornecedor() {
+        return fornecedor;
     }
 
-    public void setId_fornecedor(int id_fornecedor) {
-        this.id_fornecedor = id_fornecedor;
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
-    //endregion
+//endregion
 }

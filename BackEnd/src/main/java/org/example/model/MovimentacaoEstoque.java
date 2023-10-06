@@ -1,11 +1,25 @@
 package org.example.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.Date;
 
+@Entity
 public class MovimentacaoEstoque extends EntityId {
+
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    @Column(name = "quantidade_movimento")
     private double quantidade_movimento;
+    @Column(name = "data")
     private Date data_hora;
+    @Column(name = "tipo")
     private char tipo;
+    @Column(name = "valor")
     private double valor;
 
     //region getters e setters

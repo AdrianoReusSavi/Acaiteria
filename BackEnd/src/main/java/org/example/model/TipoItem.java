@@ -1,6 +1,11 @@
 package org.example.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class TipoItem extends EntityId {
+    @Column(name = "descricao")
     private String descricao;
 
     public String getDescricao() {

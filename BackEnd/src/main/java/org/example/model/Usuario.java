@@ -1,7 +1,12 @@
 package org.example.model;
 
-public abstract class Usuario extends EntityId{
-    private Integer permissao;
-    private String usuario;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
+@Entity
+public abstract class Usuario extends EntityId {
+    @Column(name = "usuario")
+    private String usuario;
+    @Column(name = "permissao")
+    private Integer permissao;
 }
