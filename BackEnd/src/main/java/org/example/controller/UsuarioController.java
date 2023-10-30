@@ -1,33 +1,57 @@
 package org.example.controller;
 
 import org.example.model.Usuario;
-import org.example.repository.UsuarioRepository;
+import org.example.service.NotFoundException;
 import org.example.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/usuario")
-public class UsuarioController {
-    @Autowired
-    private UsuarioRepository repository;
+@CrossOrigin(origins = "http://localhost:5173")
+public class UsuarioController extends AbstractController {
     @Autowired
     private UsuarioService service;
 
     @PostMapping
-    public Usuario create(@RequestBody Usuario usuario) {
-        return repository.save(usuario);
+    public ResponseEntity create(@RequestBody Usuario entity) {
+        entity.setId(null);
+        Usuario save = service.salvar(entity);
+        return ResponseEntity.created(URI.create("/api/usuario/" + entity.getId())).body(save);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Usuario> login(@RequestParam("user") String user, @RequestParam("password") String password) {
-        Usuario usuario = service.findByUserAndPassword(user, password);
+    @PostMapping("/login")
+    public ResponseEntity<Usuario> login(@RequestBody Usuario entity) {
+        String username = entity.getLogin();
+        String password = entity.getSenha();
+        Usuario usuario = service.findByUserAndPassword(username, password);
         if(usuario != null) {
             return ResponseEntity.ok(usuario);
         }
         else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @GetMapping("/lista")
+    public ResponseEntity findAll() {
+        List<Usuario> usuarios = service.buscaTodos();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Usuario entity) {
+        try {
+            Usuario alterado = service.alterar(id, entity);
+            return ResponseEntity.ok().body(alterado);
+        }
+        catch (NotFoundException nfe) {
+            return ResponseEntity.noContent().build();
         }
     }
 }

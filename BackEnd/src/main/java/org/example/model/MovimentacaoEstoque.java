@@ -24,6 +24,14 @@ public class MovimentacaoEstoque extends EntityId {
 
     //region getters e setters
 
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
     public double getQuantidade_movimento() {
         return quantidade_movimento;
     }
@@ -55,5 +63,6 @@ public class MovimentacaoEstoque extends EntityId {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
     //endregion
 }

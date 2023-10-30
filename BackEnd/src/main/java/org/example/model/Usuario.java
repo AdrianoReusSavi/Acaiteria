@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 
 @Entity
 public class Usuario extends EntityId {
-    @Column(name = "usuario")
-    private String usuario;
+    @Column(name = "nome")
+    private String nome;
+    @Column(name = "login")
+    private String login;
     @Column(name = "senha")
     private String senha;
     @Column(name = "permissao")
@@ -16,12 +18,20 @@ public class Usuario extends EntityId {
 
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getNome() {
+        return nome;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getSenha() {

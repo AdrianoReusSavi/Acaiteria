@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>, CustomQuerydslPredicateExecutor<Usuario> {
 
-    @Query("SELECT u FROM Usuario u WHERE u.usuario = :user AND u.senha = :password")
+    @Query("SELECT u FROM Usuario u WHERE u.login = :user AND u.senha = :password")
     Usuario findByUserAndPassword(@Param("user") String user, @Param("password") String password);
 }

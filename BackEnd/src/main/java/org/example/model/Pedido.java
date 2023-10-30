@@ -12,8 +12,9 @@ public class Pedido extends EntityId {
     @JoinColumn(name = "status_id")
     private Status status;
 
-    @OneToMany(mappedBy = "pedido")
-    private List<PedidoItem> pedidoItems = new ArrayList<>();
+    //@OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoItem> pedidoItens = new ArrayList<>();
 
     @Column(name = "data")
     private Date data_hora;
@@ -21,14 +22,26 @@ public class Pedido extends EntityId {
     private double valor_total;
     @Column(name = "desconto")
     private double desconto;
-    @Column(name = "metodo_id")
-    private Integer metodo;
-    @Column(name = "condicao_id")
-    private Integer condicao;
     @Column(name = "cliente")
     private String cliente;
 
     //region getters e setters
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public List<PedidoItem> getPedidoItens() {
+        return pedidoItens;
+    }
+
+    public void setPedidoItens(List<PedidoItem> pedidoItens) {
+        this.pedidoItens = pedidoItens;
+    }
 
     public Date getData_hora() {
         return data_hora;
@@ -61,5 +74,6 @@ public class Pedido extends EntityId {
     public void setCliente(String cliente) {
         this.cliente = cliente;
     }
+
     //endregion
 }
