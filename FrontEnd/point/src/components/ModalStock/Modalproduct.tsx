@@ -21,7 +21,7 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
   const [descricao, setDescricao] = useState("");
   const [quantidade, setQuantidade] = useState("");
   const [vlrfl, setVlrFl] = useState("");
-  const [vlrflFormatted, setVlrFlFormatted] = useState("");
+  
   const [pic, setPic] = useState("");
   const [checked, setChecked] = useState(false);
 
@@ -35,24 +35,13 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
       setChecked(editProduct.checked);
     }
   }, [editProduct]);
-  useEffect(() => {
-    const formatCurrency = (value: string) => {
-      const formatter = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      });
-      return formatter.format(Number(value));
-    };
-
-    setVlrFlFormatted(formatCurrency(vlrfl));
-  }, [vlrfl]);
-
+  
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log()
     const newProduct: ProductProps = {
       name: nome,
-      vlrfl: vlrflFormatted,
+      vlrfl: vlrfl,
       image: pic,
       quantidade: quantidade,
       descricao:descricao,

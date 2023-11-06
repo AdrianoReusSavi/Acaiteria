@@ -5,7 +5,7 @@ import Filtro from "@/components/Navbartb/Filtro";
 
 interface ProductProps {
   name: string;
-  vlrfl: string;
+  vlrfl: number;
   image: string;
   checked: boolean;
   price: number;
@@ -28,7 +28,7 @@ export default function Menu() {
   };
 
   const selectProduct = (product: ProductProps) => {
-    setSelectedProduct(product);
+    setSelectedProduct({ ...product, price: product.vlrfl });
     handleProductClick(product.name);
   };
 
@@ -48,13 +48,19 @@ export default function Menu() {
     }
   }, []);
 
-  const convertToCartItems = (clickCount: { [key: string]: number }): CartItem[] => {
-    return Object.entries(clickCount).map(([name, quantity]) => ({
-      name,
-      price: selectedProduct ? selectedProduct.price : 0, // Use o preço do produto selecionado
-      quantity,
-    }));
+  const convertToCartItems = (clickCount: { [key: string]: number }, selectedProduct: ProductProps | null): CartItem[] => {
+    if (selectedProduct) {
+      const cartItems: CartItem[] = Object.entries(clickCount).map(([name, quantity]) => ({
+        name,
+        price: selectedProduct.price,
+        quantity,
+      }));
+      return cartItems;
+    } else {
+      return [];
+    }
   };
+  //const cartItems = convertToCartItems(clickCount, selectedProduct);
 
   return (
     <div className="p-9 w-full">
@@ -86,7 +92,7 @@ export default function Menu() {
         <CartModal
           isOpen={isModalOpen}
           product={selectedProduct}
-          cartItems={convertToCartItems(productClickCount)}
+          cartItems={convertToCartItems(productClickCount, selectedProduct)}
           onClose={() => setIsModalOpen(false)}
         />
       ) : null}

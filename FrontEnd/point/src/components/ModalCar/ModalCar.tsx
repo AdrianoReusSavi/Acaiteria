@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 
+import React, { useState,useEffect } from 'react';
 interface ProductProps {
   name: string;
-  vlrfl: string;
+  vlrfl: number;
   price: number;
 }
 
@@ -20,23 +20,39 @@ interface CartModalProps {
 }
 
 const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClose }) => {
-  const [cartItem, setCartItems] = useState<CartItem[]>([]);
+  const [cartItem, setCartItems] = useState<CartItem[]>(cartItems);
 
+  useEffect(() => {
+    setCartItems(cartItems); // Update cartItem state when cartItems prop changes
+  }, [cartItems]);
+
+  const findCartItemIndex = (productName: string) => {
+    return cartItem.findIndex((item) => item.name === productName);
+  };
 
   const decreaseQuantity = (item: CartItem) => {
-    const updatedCartItems = cartItem.map((cartItem) =>
-      cartItem.name === item.name ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem
-    );
-    setCartItems(updatedCartItems);
+    const itemIndex = findCartItemIndex(item.name);
+
+    if (itemIndex !== -1) {
+      const updatedCartItems = [...cartItem];
+      updatedCartItems[itemIndex].quantity -= 1;
+      setCartItems(updatedCartItems);
+    }
   };
 
   const increaseQuantity = (item: CartItem) => {
-    const updatedCartItems = cartItem.map((cartItem) =>
-      cartItem.name === item.name ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
-    );
-    setCartItems(updatedCartItems);
+    const itemIndex = findCartItemIndex(item.name);
+
+    if (itemIndex !== -1) {
+      const updatedCartItems = [...cartItem];
+      updatedCartItems[itemIndex].quantity += 1;
+      setCartItems(updatedCartItems);
+    }
   };
 
+  const total = cartItem.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  console.log('Valores iniciais do carrinho:', cartItems);
   return (
     <div className="fixed inset-0 flex items-center justify-end pt-9 pb-9 pr-9">
       <div className="z-2 absolute inset-0 bg-gray-800 opacity-50" />
@@ -50,14 +66,14 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
               <span>
                 <button
                   onClick={() => decreaseQuantity(item)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-l-lg"
+                  className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-l-lg mr-2"
                 >
                   -
                 </button>
                 {item.quantity}
                 <button
                   onClick={() => increaseQuantity(item)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-r-lg"
+                  className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-r-lg ml-2 mr-2"
                 >
                   +
                 </button>
@@ -67,9 +83,11 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
           ))}
         </ul>
 
-        <div className="fixed  bottom-52 justify-between">
-          <span className="text-lg font-semibold">Total: R$</span>
-          <span className="text-lg font-semibold">Resul</span>
+        <div className="fixed  bottom-52  items-center justify-between">
+          <span className="text-lg font-semibold">Total: </span>
+          <span className="text-lg font-semibold">R${total}</span>
+        
+
         </div>
         <div className="fixed bottom-32">
           <p className="text-lg">Formas de Pagamento:</p>
