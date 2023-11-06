@@ -1,14 +1,17 @@
 package org.example.controller;
 
+import org.example.dto.PedidoItemDTO;
 import org.example.model.PedidoItem;
 import org.example.service.NotFoundException;
 import org.example.service.PedidoItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/pedidoItem")
@@ -18,15 +21,30 @@ public class PedidoItemController extends AbstractController {
     private PedidoItemService service;
 
     @PostMapping
-    public ResponseEntity<PedidoItem> create(@RequestBody PedidoItem entity) {
+    public ResponseEntity<PedidoItem> create(@RequestBody @Valid PedidoItem entity) {
         PedidoItem save = service.salvar(entity);
         return ResponseEntity.created(URI.create("/api/pedidoItem/" + entity.getId())).body(save);
     }
 
     @GetMapping
-    public ResponseEntity<List<PedidoItem>> findAll() {
-        List<PedidoItem> itens = service.buscaTodos();
-        return ResponseEntity.ok(itens);
+    public ResponseEntity<Page<PedidoItemDTO>> findAll(@RequestParam(required = false) String filter,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "15") int size) {
+        Page<PedidoItem> pedidoItems = service.buscaTodos(filter, PageRequest.of(page, size));
+        Page<PedidoItemDTO> pedidoItemDTOS = PedidoItemDTO.fromEntity(pedidoItems);
+        return ResponseEntity.ok(pedidoItemDTOS);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<PedidoItem> findById(@PathVariable("id") Long id) {
+        PedidoItem pedidoItem = service.buscaPorId(id);
+        return ResponseEntity.ok(pedidoItem);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<PedidoItem> remove(@PathVariable("id") Long id) {
+        service.remover(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")

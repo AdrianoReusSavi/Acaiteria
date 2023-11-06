@@ -1,29 +1,27 @@
 package org.example.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
 public class MovimentacaoEstoque extends EntityId {
-
     @ManyToOne
     @JoinColumn(name = "item_id")
+    @NotNull
     private Item item;
 
-    @Column(name = "quantidade_movimento")
-    private double quantidade_movimento;
-    @Column(name = "data")
-    private Date data_hora;
-    @Column(name = "tipo")
-    private char tipo;
-    @Column(name = "valor")
-    private double valor;
+    @Column(name = "quantidade_movimento", nullable = false)
+    private Integer quantidadeMovimento;
+    @Column(name = "data", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataHora;
+    @Column(name = "tipo", nullable = false, length = 1)
+    private String tipo;
+    @Column(name = "valor", nullable = false, precision = 10, scale = 2)
+    private Double valor;
 
     //region getters e setters
-
     public Item getItem() {
         return item;
     }
@@ -32,37 +30,36 @@ public class MovimentacaoEstoque extends EntityId {
         this.item = item;
     }
 
-    public double getQuantidade_movimento() {
-        return quantidade_movimento;
+    public Integer getQuantidadeMovimento() {
+        return quantidadeMovimento;
     }
 
-    public void setQuantidade_movimento(double quantidade_movimento) {
-        this.quantidade_movimento = quantidade_movimento;
+    public void setQuantidadeMovimento(Integer quantidadeMovimento) {
+        this.quantidadeMovimento = quantidadeMovimento;
     }
 
-    public Date getData_hora() {
-        return data_hora;
+    public Date getDataHora() {
+        return dataHora;
     }
 
-    public void setData_hora(Date data_hora) {
-        this.data_hora = data_hora;
+    public void setDataHora(Date dataHora) {
+        this.dataHora = dataHora;
     }
 
-    public char getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(char tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
-    public double getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(double valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
-
     //endregion
 }

@@ -1,39 +1,40 @@
 package org.example.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Pedido extends EntityId {
+    //@OneToOne
+    //@JoinColumn(name = "status_id")
+    //@NotNull(message = "O status do pedido deve ser informado!")
+    //private Status status;
 
-    @OneToOne
-    @JoinColumn(name = "status_id")
-    private Status status;
-
-    //@OneToMany(mappedBy = "pedido")
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoItem> pedidoItens = new ArrayList<>();
 
-    @Column(name = "data")
-    private Date data_hora;
-    @Column(name = "valor_total")
-    private double valor_total;
-    @Column(name = "desconto")
-    private double desconto;
-    @Column(name = "cliente")
+    @Column(name = "data", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataHora;
+    @Column(name = "valor_total", nullable = false, precision = 10, scale = 2)
+    private Double valorTotal;
+    @Column(name = "desconto", nullable = false, precision = 10, scale = 2)
+    private Double desconto;
+    @Column(name = "cliente", nullable = false, length = 60)
     private String cliente;
 
     //region getters e setters
 
-    public Status getStatus() {
-        return status;
-    }
+    //public Status getStatus() {
+    //    return status;
+    //}
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    //public void setStatus(Status status) {
+    //    this.status = status;
+    //}
 
     public List<PedidoItem> getPedidoItens() {
         return pedidoItens;
@@ -43,27 +44,27 @@ public class Pedido extends EntityId {
         this.pedidoItens = pedidoItens;
     }
 
-    public Date getData_hora() {
-        return data_hora;
+    public Date getDataHora() {
+        return dataHora;
     }
 
-    public void setData_hora(Date data_hora) {
-        this.data_hora = data_hora;
+    public void setDataHora(Date dataHora) {
+        this.dataHora = dataHora;
     }
 
-    public double getValor_total() {
-        return valor_total;
+    public Double getValorTotal() {
+        return valorTotal;
     }
 
-    public void setValor_total(double valor_total) {
-        this.valor_total = valor_total;
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
-    public double getDesconto() {
+    public Double getDesconto() {
         return desconto;
     }
 
-    public void setDesconto(double desconto) {
+    public void setDesconto(Double desconto) {
         this.desconto = desconto;
     }
 
@@ -74,6 +75,5 @@ public class Pedido extends EntityId {
     public void setCliente(String cliente) {
         this.cliente = cliente;
     }
-
     //endregion
 }

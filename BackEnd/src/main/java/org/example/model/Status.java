@@ -5,9 +5,10 @@ import javax.persistence.Entity;
 
 @Entity
 public class Status extends EntityId {
-    @Column(name = "descricao")
+    @Column(name = "descricao", nullable = false, length = 20)
     private String descricao;
 
+    //region Getters e Setters
     public String getDescricao() {
         return descricao;
     }
@@ -15,4 +16,5 @@ public class Status extends EntityId {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+    //endregion
 }

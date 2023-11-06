@@ -1,10 +1,10 @@
 package org.example.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class PedidoItem extends EntityId {
-
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
@@ -13,13 +13,14 @@ public class PedidoItem extends EntityId {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @Column(name = "descricao_item")
-    private String descricao_item;
-    @Column(name = "valor_venda")
-    private Double valor_venda;
-    @Column(name = "quantidade")
-    private Double quantidade;
+    @Column(name = "descricao_item", nullable = false, length = 250)
+    private String descricaoItem;
+    @Column(name = "valor_venda", nullable = false, precision = 10, scale = 2)
+    private Double valorVenda;
+    @Column(name = "quantidade", nullable = false)
+    private Integer quantidade;
 
+    //region Getters e Setters
     public Pedido getPedido() {
         return pedido;
     }
@@ -36,27 +37,28 @@ public class PedidoItem extends EntityId {
         this.item = item;
     }
 
-    public String getDescricao_item() {
-        return descricao_item;
+    public String getDescricaoItem() {
+        return descricaoItem;
     }
 
-    public void setDescricao_item(String descricao_item) {
-        this.descricao_item = descricao_item;
+    public void setDescricaoItem(String descricaoItem) {
+        this.descricaoItem = descricaoItem;
     }
 
-    public Double getValor_venda() {
-        return valor_venda;
+    public Double getValorVenda() {
+        return valorVenda;
     }
 
-    public void setValor_venda(Double valor_venda) {
-        this.valor_venda = valor_venda;
+    public void setValorVenda(Double valorVenda) {
+        this.valorVenda = valorVenda;
     }
 
-    public Double getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Double quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
+    //endregion
 }

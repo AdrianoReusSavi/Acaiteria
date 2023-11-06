@@ -5,19 +5,16 @@ import javax.persistence.Entity;
 
 @Entity
 public class Usuario extends EntityId {
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false, length = 60)
     private String nome;
-    @Column(name = "login")
+    @Column(name = "login", nullable = false, length = 60)
     private String login;
-    @Column(name = "senha")
+    @Column(name = "senha", nullable = false, length = 20)
     private String senha;
-    @Column(name = "permissao")
+    @Column(name = "permissao", nullable = false)
     private Integer permissao;
 
-    public Usuario() {
-
-    }
-
+    //region Getters e Setters
     public String getNome() {
         return nome;
     }
@@ -49,4 +46,5 @@ public class Usuario extends EntityId {
     public void setPermissao(Integer permissao) {
         this.permissao = permissao;
     }
+    //endregion
 }

@@ -4,6 +4,8 @@ import org.example.model.Item;
 import org.example.repository.ItemRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +23,16 @@ public class ItemService {
         return repository.save(entity);
     }
 
-    public List<Item> buscaTodos() {
-        return repository.findAll();
+    public List<Item> buscaTodos(String filter) {
+        return repository.findAll(filter, Item.class);
     }
 
-    public List<Item> buscaTodosAtivos() {
-        return repository.findAllAtivos();
+    public Page<Item> buscaTodos(String filter, Pageable pageable) {
+        return repository.findAll(filter, Item.class, pageable);
+    }
+
+    public Item buscaPorId(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     public Item alterar(Long id, Item entity) {
@@ -34,14 +40,12 @@ public class ItemService {
         if(existingItemOptional.isEmpty()) {
             throw new NotFoundException("Item não encontrado!");
         }
-
         Item existingItem = existingItemOptional.get();
         modelMapper.map(entity, existingItem);
-
         return repository.save(existingItem);
     }
 
-    public Item buscaPorId(Long id) {
-        return repository.findById(id).orElse(null);
+    public void remover(Long id) {
+        repository.deleteById(id);
     }
 }

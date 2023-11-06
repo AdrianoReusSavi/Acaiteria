@@ -5,11 +5,12 @@ import javax.persistence.Entity;
 
 @Entity
 public class UnidadeMedida extends EntityId {
-    @Column(name = "sigla")
+    @Column(name = "sigla", nullable = false, length = 2)
     private String sigla;
-    @Column(name = "descricao")
+    @Column(name = "descricao", nullable = false, length = 50)
     private String descricao;
 
+    //region Getters e Setters
     public String getSigla() {
         return sigla;
     }
@@ -25,4 +26,5 @@ public class UnidadeMedida extends EntityId {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+    //endregion
 }

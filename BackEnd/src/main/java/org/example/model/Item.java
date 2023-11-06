@@ -1,32 +1,31 @@
 package org.example.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Item extends EntityId {
-
     @OneToOne
     @JoinColumn(name = "unidade_medida_id")
+    @NotNull
     private UnidadeMedida unidadeMedida;
 
-    @OneToMany(mappedBy = "item")
-    private List<MovimentacaoEstoque> movimentacaoEstoques = new ArrayList<>();
-
-    @Column(name = "descricao")
+    @Column(name = "descricao", nullable = false, length = 250)
     private String descricao;
-    @Column(name = "quantidade_estoque")
-    private Double quantidade_estoque;
-    @Column(name = "preco_compra")
-    private Double preco_compra;
-    @Column(name = "preco_venda")
-    private Double preco_venda;
-    @Column(name = "imagem")
+    @Column(name = "quantidade_estoque", nullable = false)
+    private Integer quantidadeEstoque;
+    @Column(name = "preco_compra", nullable = false, precision = 10, scale = 2)
+    private Double precoCompra;
+    @Column(name = "preco_venda", nullable = false, precision = 10, scale = 2)
+    private Double precoVenda;
+    @Column(name = "imagem", nullable = false, length = 250)
     private String imagem;
-    @Column(name = "filtro")
+    @Column(name = "filtro", nullable = false)
+    @Enumerated(EnumType.STRING)
     private TipoItem filtro;
-    @Column(name = "ativo")
+    @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 
     //region getters e setters
@@ -38,14 +37,6 @@ public class Item extends EntityId {
         this.unidadeMedida = unidadeMedida;
     }
 
-    public List<MovimentacaoEstoque> getMovimentacaoEstoques() {
-        return movimentacaoEstoques;
-    }
-
-    public void setMovimentacaoEstoques(List<MovimentacaoEstoque> movimentacaoEstoques) {
-        this.movimentacaoEstoques = movimentacaoEstoques;
-    }
-
     public String getDescricao() {
         return descricao;
     }
@@ -54,28 +45,28 @@ public class Item extends EntityId {
         this.descricao = descricao;
     }
 
-    public Double getQuantidade_estoque() {
-        return quantidade_estoque;
+    public Integer getQuantidadeEstoque() {
+        return quantidadeEstoque;
     }
 
-    public void setQuantidade_estoque(Double quantidade_estoque) {
-        this.quantidade_estoque = quantidade_estoque;
+    public void setQuantidadeEstoque(Integer quantidadeEstoque) {
+        this.quantidadeEstoque = quantidadeEstoque;
     }
 
-    public Double getPreco_compra() {
-        return preco_compra;
+    public Double getPrecoCompra() {
+        return precoCompra;
     }
 
-    public void setPreco_compra(Double preco_compra) {
-        this.preco_compra = preco_compra;
+    public void setPrecoCompra(Double precoCompra) {
+        this.precoCompra = precoCompra;
     }
 
-    public Double getPreco_venda() {
-        return preco_venda;
+    public Double getPrecoVenda() {
+        return precoVenda;
     }
 
-    public void setPreco_venda(Double preco_venda) {
-        this.preco_venda = preco_venda;
+    public void setPrecoVenda(Double precoVenda) {
+        this.precoVenda = precoVenda;
     }
 
     public String getImagem() {

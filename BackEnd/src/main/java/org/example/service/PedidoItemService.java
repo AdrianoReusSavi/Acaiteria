@@ -4,6 +4,8 @@ import org.example.model.PedidoItem;
 import org.example.repository.PedidoItemRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,19 +23,29 @@ public class PedidoItemService {
         return repository.save(entity);
     }
 
-    public List<PedidoItem> buscaTodos() {
-        return repository.findAll();
+    public List<PedidoItem> buscaTodos(String filter) {
+        return repository.findAll(filter, PedidoItem.class);
+    }
+
+    public Page<PedidoItem> buscaTodos(String filter, Pageable pageable) {
+        return repository.findAll(filter, PedidoItem.class, pageable);
+    }
+
+    public PedidoItem buscaPorId(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     public PedidoItem alterar(Long id, PedidoItem entity) {
         Optional<PedidoItem> existingPedidoItemOptional = repository.findById(id);
         if(existingPedidoItemOptional.isEmpty()) {
-            throw new NotFoundException("Item não encontrado!");
+            throw new NotFoundException("Item do pedido não encontrado!");
         }
-
         PedidoItem existingPedidoItem = existingPedidoItemOptional.get();
         modelMapper.map(entity, existingPedidoItem);
-
         return repository.save(existingPedidoItem);
+    }
+
+    public void remover(Long id) {
+        repository.deleteById(id);
     }
 }

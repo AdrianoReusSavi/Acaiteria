@@ -1,15 +1,18 @@
 package org.example.controller;
 
+import org.example.dto.UsuarioDTO;
 import org.example.model.Usuario;
 import org.example.service.NotFoundException;
 import org.example.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -19,8 +22,7 @@ public class UsuarioController extends AbstractController {
     private UsuarioService service;
 
     @PostMapping
-    public ResponseEntity create(@RequestBody Usuario entity) {
-        entity.setId(null);
+    public ResponseEntity<Usuario> create(@RequestBody @Valid Usuario entity) {
         Usuario save = service.salvar(entity);
         return ResponseEntity.created(URI.create("/api/usuario/" + entity.getId())).body(save);
     }
@@ -38,10 +40,25 @@ public class UsuarioController extends AbstractController {
         }
     }
 
-    @GetMapping("/lista")
-    public ResponseEntity findAll() {
-        List<Usuario> usuarios = service.buscaTodos();
-        return ResponseEntity.ok(usuarios);
+    @GetMapping
+    public ResponseEntity<Page<UsuarioDTO>> findAll(@RequestParam(required = false) String filter,
+                                                    @RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "15") int size) {
+        Page<Usuario> usuarios = service.buscaTodos(filter, PageRequest.of(page, size));
+        Page<UsuarioDTO> usuarioDTOS = UsuarioDTO.fromEntity(usuarios);
+        return ResponseEntity.ok(usuarioDTOS);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Usuario> findById(@PathVariable("id") Long id) {
+        Usuario usuario = service.buscaPorId(id);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Usuario> remove(@PathVariable("id") Long id) {
+        service.remover(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")

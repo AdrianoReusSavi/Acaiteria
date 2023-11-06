@@ -5,6 +5,8 @@ import org.example.model.Usuario;
 import org.example.repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,12 +27,16 @@ public class UsuarioService {
         return repository.save(entity);
     }
 
-    public List<Usuario> buscaTodos() {
-        return repository.findAll();
+    public List<Usuario> buscaTodos(String filter) {
+        return repository.findAll(filter, Usuario.class);
     }
 
-    public Usuario findByUserAndPassword(String user, String password) {
-        return repository.findByUserAndPassword(user, password);
+    public Page<Usuario> buscaTodos(String filter, Pageable pageable) {
+        return repository.findAll(filter, Usuario.class, pageable);
+    }
+
+    public Usuario buscaPorId(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     public Usuario alterar(Long id, Usuario entity) {
@@ -38,10 +44,16 @@ public class UsuarioService {
         if(existingUsuarioOptional.isEmpty()) {
             throw new NotFoundException("Usuário não encontrado");
         }
-
         Usuario existingUsuario = existingUsuarioOptional.get();
         modelMapper.map(entity, existingUsuario);
-
         return repository.save(existingUsuario);
+    }
+
+    public void remover(Long id) {
+        repository.deleteById(id);
+    }
+
+    public Usuario findByUserAndPassword(String user, String password) {
+        return repository.findByUserAndPassword(user, password);
     }
 }
