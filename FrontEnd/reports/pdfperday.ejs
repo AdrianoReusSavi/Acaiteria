@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Estoque</title>
+
+    <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+
+    
+    <style>
+        table {
+            width: 100%;
+        }
+
+        th {
+            text-align: left;
+        }
+    </style>
+</head>
+<body class="bg-purple-100">
+    <div class="m-8">           
+        <h1 class="text-3xl mb-8">Listagem de Produtos</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Quantidade</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% if (produtos.length > 0) { %>
+                <% produtos.forEach(produtos => { %>
+                    <tr>
+                        <td><%= produtos.name %></td>
+                        <td><%= produtos.description %></td>
+                        <td><%= produtos.amount %></td>
+                        <td><%= produtos.value %></td>
+                    </tr>
+                <%  }); %>
+            <% } %>
+            </tbody>
+            <tfoot>
+                <tr><td colspan="2"><%=produtos.length%> produtos</td></tr>
+            </tfoot>
+        </table>
+    </div>
+</body>
+</html>
