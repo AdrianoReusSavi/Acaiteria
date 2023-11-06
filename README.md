@@ -6,6 +6,15 @@
   <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;
 </p>
 
+## 👤 Desenvolvedores
+
+Adriano Savi - [@AdrianoReusSavi](https://github.com/AdrianoReusSavi)<br>
+Charles Clezar- [@CharlesClezar](https://github.com/CharlesClezar)<br>
+Gabriel Souza - [@GabrielSouzaDG](https://github.com/GabrielSouzaDG)<br>
+Jhayne - [@JhayneK](https://github.com/JhayneK)<br>
+Pedro Guedez - [@Pedroguedez](https://github.com/Pedroguedez)<br>
+Pedro Hahn - [@pedrohahn](https://github.com/pedrohahn)<br>
+
 ## 🚀 Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
@@ -37,4 +46,5 @@ Você pode visualizar o layout do projeto através do link:
 https://www.figma.com/file/cBsjB1vKR2UAesVzHUQ9Kf/Untitled?type=design&node-id=0-1&mode=design
 
 ---
+
 
