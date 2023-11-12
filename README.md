@@ -34,7 +34,7 @@ O principal objetivo deste projeto é criar uma plataforma intuitiva e fácil de
 
 
 Você pode visualizar o layout do projeto através do link:
-https://www.figma.com/file/cBsjB1vKR2UAesVzHUQ9Kf/Untitled?type=design&node-id=0-1&mode=design
+[Figma](https://www.figma.com/file/cBsjB1vKR2UAesVzHUQ9Kf/Untitled?type=design&node-id=0-1&mode=design)
 
 ---
 
