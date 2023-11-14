@@ -14,15 +14,17 @@ interface ModalProductProps {
   closeModal: () => void;
   handleFormSubmit: (product: ProductProps) => void;
   editProduct?: ProductProps | null;
+  deleteProductHandler: (productToDelete: ProductProps) => void;
 }
 
-const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmit, editProduct }) => {
+const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmit, editProduct, deleteProductHandler }) => {
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [quantidade, setQuantidade] = useState("");
   const [vlrfl, setVlrFl] = useState("");
   const [pic, setPic] = useState("");
   const [checked, setChecked] = useState(false);
+  const [deleteProduct, setDeleteProduct] = useState(false);
 
   useEffect(() => {
     if (editProduct) {
@@ -35,12 +37,21 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
     }
   }, [editProduct]);
 
+  const handleDeleteClick = () => {
+    setDeleteProduct(true);
+  };
+
+  useEffect(() => {
+    if (deleteProduct && editProduct) {
+      deleteProductHandler(editProduct);
+      setDeleteProduct(false);
+    }
+  }, [deleteProduct, deleteProductHandler, editProduct]);
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log();
-    //if (!validateInputs()) {
-    //   return;
-    // }
+  
     const newProduct: ProductProps = {
       name: nome,
       vlrfl: vlrfl,
@@ -53,31 +64,7 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
     handleFormSubmit(newProduct);
     resetInputs();
   };
-  /*
-    const validateInputs = () => {
-      // Validate name (allow only letters)
-      const nameRegex = /^[a-zA-Z\s]+$/;
-      if (!nameRegex.test(nome)) {
-        alert("Please enter a valid name with only letters.");
-        return false;
-      }
-  
-      // Validate quantidade (allow only numbers with up to 6 digits)
-      const quantidadeRegex = /^\d{1,6}$/;
-      if (!quantidadeRegex.test(quantidade)) {
-        alert("Please enter a valid quantity with up to 6 digits.");
-        return false;
-      }
-  
-      // Validate vlrfl (allow only numbers)
-      const vlrflRegex = /^\d+(\.\d{1,2})?$/;
-      if (!vlrflRegex.test(vlrfl)) {
-        alert("Please enter a valid value with up to 2 decimal places.");
-        return false;
-      }
-  
-      return true;
-    };*/
+
   const resetInputs = () => {
     setNome("");
     setDescricao("");
@@ -85,6 +72,7 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
     setVlrFl("");
     setPic("");
   };
+  
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -171,7 +159,7 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
             </div>
             <div className="fixed flex bottom-12 right-12 space-x-8"> 
               <div>
-                <button className="bg-red-400 hover:bg-gray-350 px-4 py-2 rounded mr-4">Trash</button>
+                <button className="bg-red-400 hover:bg-gray-350 px-4 py-2 rounded mr-4" onClick={handleDeleteClick}>Trash</button>
               </div>
               <div>
                 <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded mr-4" onClick={closeModal}>

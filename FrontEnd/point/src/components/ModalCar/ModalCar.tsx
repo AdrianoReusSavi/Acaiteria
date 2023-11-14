@@ -54,23 +54,23 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
   const totItens = cartItem.reduce((acc, item) => acc + item.quantity, 0);
   console.log('Valores iniciais do carrinho:', cartItems);
   return (
-    <div className="fixed inset-0 flex items-center justify-end pt-9 pb-9 pr-9">
-      <div className="z-2 absolute h-full inset-0 bg-gray-800 opacity-50" />
-      <div className="z-10 h-full w-2/5 rounded-lg bg-white p-6">
+    <div className="fixed inset-0 flex items-center justify-end pt-9 pb-9 ">
+      <div className="z-2 absolute inset-0 bg-gray-800 opacity-50" />
+      <div className="z-10 min-h-screen w-2/5 rounded-lg bg-white p-6">
         <ul className="space-y-2">
           {cartItems.map((item) => (
             <li key={item.name} className="flex items-center justify-between">
               <span>
                 <button
                   onClick={() => decreaseQuantity(item)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-l-lg mr-2"
+                  className=" text-red-400 font-bold   px-2 rounded-l-lg mr-2"
                 >
                   -
                 </button>
                 {item.quantity}
                 <button
                   onClick={() => increaseQuantity(item)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-r-lg ml-2 mr-2"
+                  className=" text-green-400 font-bold  px-2 rounded-r-lg ml-2 mr-2"
                 >
                   +
                 </button>
@@ -88,7 +88,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
 
 
 
-        <footer>
+        <footer className='w-{100%} inset-0 z-10'>
           <div className="fixed flex bottom-52 border-t-2 py-8  items-center  space-x-96">
             <div>
               <span className="text-sm ml-2 text-gray-400 font-semibold">{totItens} Itens</span>

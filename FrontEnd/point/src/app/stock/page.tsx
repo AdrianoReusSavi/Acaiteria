@@ -16,6 +16,7 @@ const Stock = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [editProduct, setEditProduct] = useState<ProductProps | null>(null);
+  const [deleteProduct, setDeleteProduct] = useState<ProductProps | null>(null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -55,6 +56,9 @@ const Stock = () => {
       const parsedData = JSON.parse(savedData);
       setProducts(parsedData);
     }
+  };
+  const deleteProductHandler = (productToDelete: ProductProps) => {
+    setProducts((prevProducts) => prevProducts.filter((product) => product !== productToDelete));
   };
 
   useEffect(() => {
@@ -96,6 +100,7 @@ const Stock = () => {
           closeModal={closeModal}
           handleFormSubmit={handleFormSubmit}
           editProduct={editProduct}
+          deleteProductHandler={deleteProductHandler}
         />
       )}
     </div>
