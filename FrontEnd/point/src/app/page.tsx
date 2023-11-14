@@ -83,10 +83,10 @@ export default function Menu() {
         ))}
       </div>
       <button
-        className="fixed bottom-8 right-9 bg-blue-500 hover:bg-blue-600 text-white py-2 px-2 rounded-full"
+        className="fixed bottom-8 right-9 bg-purple-700 hover:bg-purple-600 py-2 px-2 rounded-full"
         onClick={() => openModal()}
       >
-        <img src="bag.png" alt="Shop bag" />
+        <img src="carrinho.png" alt="carrinho" />
       </button>
       {isModalOpen && selectedProduct ? ( 
         <CartModal
