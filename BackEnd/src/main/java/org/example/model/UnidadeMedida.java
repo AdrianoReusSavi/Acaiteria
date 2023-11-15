@@ -2,14 +2,18 @@ package org.example.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class UnidadeMedida extends EntityId {
-    @Column(name = "sigla", nullable = false, length = 2)
+    @NotNull @NotBlank @Max(20)
+    @Column(name = "sigla", nullable = false, length = 20)
     private String sigla;
+    @NotNull @NotBlank @Max(50)
     @Column(name = "descricao", nullable = false, length = 50)
     private String descricao;
-
     //region Getters e Setters
     public String getSigla() {
         return sigla;
