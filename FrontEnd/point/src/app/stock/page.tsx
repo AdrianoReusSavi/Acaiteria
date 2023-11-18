@@ -69,6 +69,19 @@ const Stock = () => {
     saveDataToLocalStorage(products);
   }, [products]);
 
+  const getCategoryColor = (descricao:string) => {
+    switch (descricao.toLowerCase()) {
+      case 'para':
+        return 'bg-red-500'; 
+      case 'bebidas':
+        return 'bg-blue-500'; 
+      case 'acai':
+        return 'bg-purple-500'; 
+      default:
+        return 'bg-gray-500'; 
+    }
+  };
+  
 
   return (
     <div className="p-9 w-full">
@@ -78,7 +91,7 @@ const Stock = () => {
         {products.map((product, index) => (
           <div
             key={index}
-            className="w-44 h-48 flex flex-col items-center justify-center bg-gray-200 p-15 hover:scale-105"
+            className={`w-44 h-48 flex flex-col items-center justify-center p-15 hover:scale-105 ${getCategoryColor(product.descricao)}`}
             onClick={() => openEditModal(product)}
           >
             <img src={product.image} alt={product.name} className="w-20 h-22 mb-2" />

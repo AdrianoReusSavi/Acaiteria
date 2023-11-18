@@ -17,10 +17,13 @@ interface CartModalProps {
   product: ProductProps | null;
   cartItems: CartItem[];
   onClose: () => void;
+  onCancelItemClick: (productName: string) => void;
+  onCancelAll:()=>void;
 }
 
-const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClose }) => {
+const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClose, onCancelItemClick, onCancelAll }) => {
   const [cartItem, setCartItems] = useState<CartItem[]>(cartItems);
+  const [deleteProduct, setDeleteProduct] = useState(false);
 
   useEffect(() => {
     setCartItems(cartItems); // Update cartItem state when cartItems prop changes
@@ -32,7 +35,6 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
 
   const decreaseQuantity = (item: CartItem) => {
     const itemIndex = findCartItemIndex(item.name);
-
     if (itemIndex !== -1) {
       const updatedCartItems = [...cartItem];
       updatedCartItems[itemIndex].quantity -= 1;
@@ -42,7 +44,6 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
 
   const increaseQuantity = (item: CartItem) => {
     const itemIndex = findCartItemIndex(item.name);
-
     if (itemIndex !== -1) {
       const updatedCartItems = [...cartItem];
       updatedCartItems[itemIndex].quantity += 1;
@@ -50,9 +51,21 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
     }
   };
 
+  const handleDeleteClick = (itemName: string) => {
+    const updatedCartItems = cartItem.filter((item) => item.name !== itemName);
+    setCartItems(updatedCartItems);
+  };
+
+  const handleDeleteAllClick = () => {
+    // Para apagar todos os itens e fechar o modal
+    setCartItems([]);
+    onClose();
+  };
+
+
   const total = cartItem.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const totItens = cartItem.reduce((acc, item) => acc + item.quantity, 0);
-  console.log('Valores iniciais do carrinho:', cartItems);
+  //console.log('Valores iniciais do carrinho:', cartItems);
   return (
     <div className="fixed inset-0 flex items-center justify-end pt-9 pb-9 ">
       <div className="z-2 absolute inset-0 bg-gray-800 opacity-50" />
@@ -76,17 +89,17 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
                 </button>
                 {item.name}
               </span>
-              <span>R${item.price
-              }  x</span>
+              <span>R${item.price}  x</span>
+              <button
+                onClick={() => onCancelItemClick(item.name)}
+
+                className="text-red-400 font-bold px-2 rounded-l-lg "
+              >
+                Remover
+              </button>
             </li>
           ))}
         </ul>
-
-
-
-
-
-
 
         <footer className='w-{100%} inset-0 z-10'>
           <div className="fixed flex bottom-52 border-t-2 py-8  items-center  space-x-96">
@@ -99,20 +112,24 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
             </div>
           </div>
 
-          <div className='fixed bottom-12 right-12 space-x-2'>
-            <button
-              className="mt-4 bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded-lg"
-              onClick={onClose}
-            >
-              Fechar
-            </button>
-            <button
-              className="mt-4 bg-green-400 hover:bg-green-600 py-2 px-4 rounded-lg"
-              onClick={onClose}
-            > PAGAR
-
-            </button>
+          <div className="fixed flex bottom-12 right-12 space-x-8">
+            <div>
+              <button
+                className="bg-red-400 hover:bg-gray-350 px-4 py-2 rounded mr-4"
+                onClick={onCancelAll}>
+                Remover Todos
+              </button>
             </div>
+
+            <div>
+              <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded mr-4" onClick={onClose}>
+                Fechar Modal
+              </button>
+              <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" type="submit">
+                PAGAR
+              </button>
+            </div>
+          </div>
         </footer>
       </div>
     </div>
