@@ -1,38 +1,33 @@
 package org.example.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.*;
 
 @Entity
 public class Item extends EntityId {
-    @NotNull @NotBlank
+    @NotNull
     @OneToOne
     @JoinColumn(name = "unidade_medida_id")
     private UnidadeMedida unidadeMedida;
-    @NotNull @NotNull
+    @NotNull @NotBlank @Size(max = 250)
     @Column(name = "descricao", nullable = false, length = 250)
     private String descricao;
-    @NotNull @NotBlank @Positive
+    @NotNull @PositiveOrZero
     @Column(name = "quantidade_estoque", nullable = false)
     private Integer quantidadeEstoque;
-    @NotNull @NotBlank @Positive
+    @NotNull @Positive
     @Column(name = "preco_compra", nullable = false, precision = 10, scale = 2)
     private Double precoCompra;
-    @NotNull @NotBlank @Positive
+    @NotNull @Positive
     @Column(name = "preco_venda", nullable = false, precision = 10, scale = 2)
     private Double precoVenda;
-    @NotNull @NotBlank
+    @NotNull @NotBlank @Size(max = 250)
     @Column(name = "imagem", nullable = false, length = 250)
     private String imagem;
-    @NotNull @NotBlank
+    @NotNull @Enumerated(EnumType.STRING)
     @Column(name = "filtro", nullable = false)
-    @Enumerated(EnumType.STRING)
     private TipoItem filtro;
-    @NotNull @NotBlank
+    @NotNull
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 

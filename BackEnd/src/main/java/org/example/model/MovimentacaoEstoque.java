@@ -1,29 +1,25 @@
 package org.example.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import java.util.Date;
+import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class MovimentacaoEstoque extends EntityId {
-    @NotNull @NotBlank
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
-
-    @NotNull @NotBlank @Positive
+    @NotNull @Positive
     @Column(name = "quantidade_movimento", nullable = false)
     private Integer quantidadeMovimento;
-    @NotNull @NotBlank
+    @NotNull
     @Column(name = "data", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataHora;
-    @NotNull @NotBlank
-    @Column(name = "tipo", nullable = false, length = 1)
-    private String tipo;
-    @NotNull @NotBlank @Positive
+    private LocalDateTime dataHora;
+    @NotNull @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false)
+    private TipoMovimentacao tipo;
+    @NotNull @Positive
     @Column(name = "valor", nullable = false, precision = 10, scale = 2)
     private Double valor;
 
@@ -44,19 +40,19 @@ public class MovimentacaoEstoque extends EntityId {
         this.quantidadeMovimento = quantidadeMovimento;
     }
 
-    public Date getDataHora() {
+    public LocalDateTime getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(Date dataHora) {
+    public void setDataHora(LocalDateTime dataHora) {
         this.dataHora = dataHora;
     }
 
-    public String getTipo() {
+    public TipoMovimentacao getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoMovimentacao tipo) {
         this.tipo = tipo;
     }
 

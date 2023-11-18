@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.model.QUnidadeMedida;
 import org.example.model.UnidadeMedida;
 import org.example.repository.UnidadeMedidaRepository;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,9 @@ public class UnidadeMedidaService {
     private UnidadeMedidaRepository repository;
 
     public UnidadeMedida salvar(UnidadeMedida entity) {
+        //region Regras de negócio
+        validaUnidadeMedida(entity.getSigla(), 0L);
+        //endregion
         return repository.save(entity);
     }
 
@@ -42,10 +46,20 @@ public class UnidadeMedidaService {
         }
         UnidadeMedida existingUnidadeMedida = existingUnidadeMedidaOptional.get();
         modelMapper.map(entity, existingUnidadeMedida);
+        //region Regras de negócio
+        validaUnidadeMedida(entity.getSigla(), id);
+        //endregion
         return repository.save(existingUnidadeMedida);
     }
 
     public void remover(Long id) {
         repository.deleteById(id);
+    }
+
+    private void validaUnidadeMedida(String sigla, Long id) {
+        boolean existe = repository.exists(QUnidadeMedida.unidadeMedida.id.ne(id).and(QUnidadeMedida.unidadeMedida.sigla.eq(sigla)));
+        if(existe) {
+            throw new ValidationException("Sigla já existente no sistema!");
+        }
     }
 }

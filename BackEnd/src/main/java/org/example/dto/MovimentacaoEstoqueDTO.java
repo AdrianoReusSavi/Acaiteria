@@ -1,6 +1,7 @@
 package org.example.dto;
 
 import org.example.model.MovimentacaoEstoque;
+import org.example.model.TipoMovimentacao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 public class MovimentacaoEstoqueDTO {
     private Long id;
     private Integer quantidadeMovimento;
-    private String tipo;
+    private TipoMovimentacao tipo;
     private Double valor;
 
     //region Getters e Setters
@@ -30,11 +31,11 @@ public class MovimentacaoEstoqueDTO {
         this.quantidadeMovimento = quantidadeMovimento;
     }
 
-    public String getTipo() {
+    public TipoMovimentacao getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoMovimentacao tipo) {
         this.tipo = tipo;
     }
 

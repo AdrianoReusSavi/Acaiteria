@@ -2,7 +2,7 @@ package org.example.controller;
 
 import org.example.dto.ItemDTO;
 import org.example.model.Item;
-import org.example.model.MovimentacaoEstoque;
+import org.example.model.TipoMovimentacao;
 import org.example.service.ItemService;
 import org.example.service.MovimentacaoEstoqueService;
 import org.example.service.NotFoundException;
@@ -30,7 +30,7 @@ public class ItemController extends AbstractController {
     @PostMapping
     public ResponseEntity<Item> create(@RequestBody @Valid Item entity) {
         Item save = itemService.salvar(entity);
-        movimentacaoEstoqueService.salvarMovimentacao(entity, entity.getQuantidadeEstoque(), "e", entity.getPrecoCompra() * entity.getQuantidadeEstoque());
+        movimentacaoEstoqueService.salvarMovimentacao(entity, entity.getQuantidadeEstoque(), TipoMovimentacao.ENTRADA, entity.getPrecoCompra() * entity.getQuantidadeEstoque());
         return ResponseEntity.created(URI.create("/api/item/" + entity.getId())).body(save);
     }
 
@@ -66,7 +66,7 @@ public class ItemController extends AbstractController {
                 if(!quantidade.equals(alterado.getQuantidadeEstoque())) {
                     Integer diferenca = alterado.getQuantidadeEstoque() - quantidade;
                     Double valor = alterado.getPrecoCompra() * diferenca;
-                    movimentacaoEstoqueService.salvarMovimentacao(alterado, diferenca, "e", valor);
+                    movimentacaoEstoqueService.salvarMovimentacao(alterado, diferenca, TipoMovimentacao.ENTRADA, valor);
                 }
                 return ResponseEntity.ok().body(alterado);
             }
