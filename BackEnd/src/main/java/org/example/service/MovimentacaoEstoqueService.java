@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.model.Item;
 import org.example.model.MovimentacaoEstoque;
+import org.example.model.TipoMovimentacao;
 import org.example.repository.MovimentacaoEstoqueRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,14 +52,14 @@ public class MovimentacaoEstoqueService {
         repository.deleteById(id);
     }
 
-    public void salvarMovimentacao(Item item, Integer diferenca, String tipo, Double valor) {
+    public void salvarMovimentacao(Item item, Integer diferenca, TipoMovimentacao tipo, Double valor) {
         if(diferenca < 0) {
             throw new ValidationException("Quantidade não pode ser menor que zero!");
         }
         MovimentacaoEstoque movimentacaoEstoque = new MovimentacaoEstoque();
         movimentacaoEstoque.setItem(item);
         movimentacaoEstoque.setQuantidadeMovimento(diferenca);
-        movimentacaoEstoque.setDataHora(new Date());
+        movimentacaoEstoque.setDataHora(LocalDateTime.now());
         movimentacaoEstoque.setTipo(tipo);
         movimentacaoEstoque.setValor(valor);
         salvar(movimentacaoEstoque);

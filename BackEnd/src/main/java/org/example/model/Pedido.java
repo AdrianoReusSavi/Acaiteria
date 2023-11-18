@@ -1,41 +1,32 @@
 package org.example.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Pedido extends EntityId {
-    //@OneToOne
-    //@JoinColumn(name = "status_id")
-    //@NotNull(message = "O status do pedido deve ser informado!")
-    //private Status status;
-
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoItem> pedidoItens = new ArrayList<>();
-
+    @NotNull
     @Column(name = "data", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataHora;
+    private LocalDateTime dataHora;
+    @NotNull @Positive
     @Column(name = "valor_total", nullable = false, precision = 10, scale = 2)
     private Double valorTotal;
+    @NotNull @PositiveOrZero
     @Column(name = "desconto", nullable = false, precision = 10, scale = 2)
     private Double desconto;
+    @NotNull @NotBlank @Size(max = 60)
     @Column(name = "cliente", nullable = false, length = 60)
     private String cliente;
+    @NotNull @Enumerated(EnumType.STRING)
+    @Column(name = "filtro", nullable = false)
+    private Status status;
 
     //region getters e setters
-
-    //public Status getStatus() {
-    //    return status;
-    //}
-
-    //public void setStatus(Status status) {
-    //    this.status = status;
-    //}
-
     public List<PedidoItem> getPedidoItens() {
         return pedidoItens;
     }
@@ -44,11 +35,11 @@ public class Pedido extends EntityId {
         this.pedidoItens = pedidoItens;
     }
 
-    public Date getDataHora() {
+    public LocalDateTime getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(Date dataHora) {
+    public void setDataHora(LocalDateTime dataHora) {
         this.dataHora = dataHora;
     }
 
@@ -74,6 +65,14 @@ public class Pedido extends EntityId {
 
     public void setCliente(String cliente) {
         this.cliente = cliente;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
     //endregion
 }

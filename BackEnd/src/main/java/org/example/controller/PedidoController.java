@@ -2,9 +2,9 @@ package org.example.controller;
 
 import org.example.dto.PedidoDTO;
 import org.example.model.Item;
-import org.example.model.MovimentacaoEstoque;
 import org.example.model.Pedido;
 import org.example.model.PedidoItem;
+import org.example.model.TipoMovimentacao;
 import org.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,16 +37,16 @@ public class PedidoController extends AbstractController {
 
         for(PedidoItem pedidoItem : entity.getPedidoItens()) {
             pedidoItem.setPedido(save);
-            pedidoItemService.salvar(pedidoItem);
+            pedidoItemService.salvarByPedido(pedidoItem);
 
             Long itemId = pedidoItem.getItem().getId();
             Item item = itemService.buscaPorId(itemId);
 
             Integer quantidadePedido = pedidoItem.getQuantidade();
             item.setQuantidadeEstoque(item.getQuantidadeEstoque() - quantidadePedido);
-            itemService.salvar(item);
+            itemService.alterar(item.getId(), item);
 
-            movimentacaoEstoqueService.salvarMovimentacao(pedidoItem.getItem(), pedidoItem.getQuantidade(), "s", pedidoItem.getValorVenda());
+            movimentacaoEstoqueService.salvarMovimentacao(pedidoItem.getItem(), pedidoItem.getQuantidade(), TipoMovimentacao.SAIDA, pedidoItem.getValorVenda());
         }
 
         return  ResponseEntity.created(URI.create("/api/pedido/" + entity.getId())).body(save);
@@ -84,13 +84,3 @@ public class PedidoController extends AbstractController {
         }
     }
 }
-
-//region antiga movimentacao
-//MovimentacaoEstoque movimentacao = new MovimentacaoEstoque();
-//movimentacao.setItem(pedidoItem.getItem());
-//movimentacao.setQuantidade_movimento(-pedidoItem.getQuantidade());
-//movimentacao.setData_hora(save.getData_hora());
-//movimentacao.setTipo("s");
-//movimentacao.setValor(pedidoItem.getValor_venda());
-//movimentacaoEstoqueService.salvar(movimentacao);
-//endregion

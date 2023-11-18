@@ -21,9 +21,9 @@ public class UsuarioService {
     private UsuarioRepository repository;
 
     public Usuario salvar(Usuario entity) {
-        if(!repository.findAll(QUsuario.usuario.nome.eq(entity.getNome())).isEmpty()) {
-            throw new ValidationException("Já existe um usuário com essa descrição cadastrado!");
-        }
+        //region Regras de negócio
+        validaUsuario(entity.getLogin(), 0L);
+        //endregion
         return repository.save(entity);
     }
 
@@ -46,6 +46,9 @@ public class UsuarioService {
         }
         Usuario existingUsuario = existingUsuarioOptional.get();
         modelMapper.map(entity, existingUsuario);
+        //region Regras de negócio
+        validaUsuario(entity.getLogin(), id);
+        //endregion
         return repository.save(existingUsuario);
     }
 
@@ -55,5 +58,12 @@ public class UsuarioService {
 
     public Usuario findByUserAndPassword(String user, String password) {
         return repository.findByUserAndPassword(user, password);
+    }
+
+    private void validaUsuario(String login, Long id) {
+        boolean existe = repository.exists(QUsuario.usuario.id.ne(id).and(QUsuario.usuario.login.eq(login)));
+        if(existe) {
+            throw new ValidationException("Login já existente no sistema!");
+        }
     }
 }

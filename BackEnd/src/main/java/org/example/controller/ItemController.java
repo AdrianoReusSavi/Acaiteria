@@ -2,10 +2,11 @@ package org.example.controller;
 
 import org.example.dto.ItemDTO;
 import org.example.model.Item;
-import org.example.model.MovimentacaoEstoque;
+import org.example.model.TipoMovimentacao;
 import org.example.service.ItemService;
 import org.example.service.MovimentacaoEstoqueService;
 import org.example.service.NotFoundException;
+import org.example.service.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +30,7 @@ public class ItemController extends AbstractController {
     @PostMapping
     public ResponseEntity<Item> create(@RequestBody @Valid Item entity) {
         Item save = itemService.salvar(entity);
-        movimentacaoEstoqueService.salvarMovimentacao(entity, entity.getQuantidadeEstoque(), "e", entity.getPrecoCompra() * entity.getQuantidadeEstoque());
+        movimentacaoEstoqueService.salvarMovimentacao(entity, entity.getQuantidadeEstoque(), TipoMovimentacao.ENTRADA, entity.getPrecoCompra() * entity.getQuantidadeEstoque());
         return ResponseEntity.created(URI.create("/api/item/" + entity.getId())).body(save);
     }
 
@@ -58,14 +59,20 @@ public class ItemController extends AbstractController {
     public ResponseEntity<Item> update(@PathVariable("id") Long id, @RequestBody Item entity) {
         try {
             Integer quantidade = itemService.buscaPorId(id).getQuantidadeEstoque();
-            Item alterado = itemService.alterar(id, entity);
+            if (entity.getQuantidadeEstoque() >= quantidade)
+            {
+                Item alterado = itemService.alterar(id, entity);
 
-            if(!quantidade.equals(alterado.getQuantidadeEstoque())) {
-                Integer diferenca = alterado.getQuantidadeEstoque() - quantidade;
-                Double valor = alterado.getPrecoCompra() * diferenca;
-                movimentacaoEstoqueService.salvarMovimentacao(alterado, diferenca, "e", valor);
+                if(!quantidade.equals(alterado.getQuantidadeEstoque())) {
+                    Integer diferenca = alterado.getQuantidadeEstoque() - quantidade;
+                    Double valor = alterado.getPrecoCompra() * diferenca;
+                    movimentacaoEstoqueService.salvarMovimentacao(alterado, diferenca, TipoMovimentacao.ENTRADA, valor);
+                }
+                return ResponseEntity.ok().body(alterado);
             }
-            return ResponseEntity.ok().body(alterado);
+            else{
+                throw new ValidationException("Não é possível adicionar menos itens que a quantidade atual do estoque.");
+            }
         }
         catch (NotFoundException nfe) {
             return ResponseEntity.noContent().build();
