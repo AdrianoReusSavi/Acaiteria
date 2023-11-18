@@ -33,6 +33,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
     return cartItem.findIndex((item) => item.name === productName);
   };
 
+  
   const decreaseQuantity = (item: CartItem) => {
     const itemIndex = findCartItemIndex(item.name);
     if (itemIndex !== -1) {
@@ -56,11 +57,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
     setCartItems(updatedCartItems);
   };
 
-  const handleDeleteAllClick = () => {
-    // Para apagar todos os itens e fechar o modal
-    setCartItems([]);
-    onClose();
-  };
+ 
 
 
   const total = cartItem.reduce((acc, item) => acc + item.price * item.quantity, 0);

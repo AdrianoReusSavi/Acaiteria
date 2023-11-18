@@ -102,10 +102,10 @@ const Stock = () => {
         ))}
       </div>
       <button
-        className="fixed bottom-8 right-9 bg-blue-500 hover:bg-blue-600 text-white py-2 px-2 rounded-full"
+         className="fixed bottom-8 right-9 bg-purple-700 hover:bg-purple-600 py-2 px-2 rounded-full"
         onClick={openModal}
       >
-        <img src="newProduto.png" alt="Adicionar Produto" />
+        <img src="adicionar-produto.png" alt="Adicionar Produto" />
       </button>
 
       {isModalOpen && (
