@@ -1,0 +1,36 @@
+<button class="btn btn-danger" id="btnReport">Print</button>
+
+<div class="d-none" id="report">
+    <h1>Report</h1>
+    <div class="row">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+
+            <body>
+                <tr>
+                    <td>1</td>
+                    <td>Copo</td>
+                    <td>10</td>
+                    <td>10/10/2023</td>
+                </tr>
+            </body>
+        </table>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $( '#btnReport').click(function () {
+        document.body,innerHTML = document.all.item("report").innerHTML
+        window.print()
+        window.location.reload()
+    })
+    
+</script>
