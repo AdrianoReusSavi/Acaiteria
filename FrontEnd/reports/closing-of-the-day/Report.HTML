@@ -1,36 +1,128 @@
-<button class="btn btn-danger" id="btnReport">Print</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
-<div class="d-none" id="report">
-    <h1>Report</h1>
-    <div class="row">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: left;
+        }
+
+        nav {
+            background-color: #A020F0;
+            color: #000000;
+            padding: 10px;
+            text-align: left;
+        }
+
+        section {
+            padding: 20px 10px 25px 50px;
+            line-height: 30px;
+            display: table;
+            margin: 0 auto;
+            justify-content: center;
+            align-items: center;
+            border-collapse: collapse;
+            height: 35px;
+        }
+
+        table {
+            font-family: Arial;
+            border-collapse: collapse;
+            padding-top: 15px;
+            padding-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: grey;
+            width: 100%;
+        }
+
+        td {
+            background-color: white;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        article {
+            margin-bottom: 20px;
+        }
+
+        form {
+            padding: 20px 10px 25px 50px;
+            display: table;
+            margin: 0 auto;
+            justify-content: center;
+            align-items: center;
+            border-collapse: collapse;
+            text-align: center;
+            
+
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <u><h1>Vendas</h1></u>
+    </header>
+
+    <nav>
+        <ul>
+            <form>
+                <div>
+                    <label for="qtdVendas">QTD.VENDAS</label>               
+                    <input type="text">QTD.COMPRAS
+                    <input type="text">LUCRO BRUTO
+                    <input type="text">LUCRO
+                    <input type="text">DINHEIRO
+                    <input type="text">PIX
+                    <input type="text">CRÉDITO
+                    <input type="text">DÉBITO
+                </div>
+            </form>
+        </ul>
+    </nav>
+
+    <section>
+        <table>
+            <tr>
+                <th>Nº Vendas</th>
+                <th>Método</th>
+                <th>Valor</th>
+                <th>Hora</th>
+                <th>Status</th>
+            </tr>
 
             <body>
                 <tr>
                     <td>1</td>
-                    <td>Copo</td>
-                    <td>10</td>
-                    <td>10/10/2023</td>
+                    <td>Pix</td>
+                    <td>10,00</td>
+                    <td>10:00</td>
+                    <td>Ok</td>
                 </tr>
             </body>
         </table>
-    </div>
-</div>
-
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script>
-    $( '#btnReport').click(function () {
-        document.body,innerHTML = document.all.item("report").innerHTML
-        window.print()
-        window.location.reload()
-    })
-    
-</script>
+    </section>
+</body>
+</html>
