@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import CartModal from "@/components/ModalCar/ModalCar";
 import Filtro from "@/components/Navbartb/Filtro";
+import { styled } from "styled-components";
 
 interface ProductProps {
   name: string;
@@ -9,6 +10,7 @@ interface ProductProps {
   image: string;
   checked: boolean;
   price: number;
+  descricao: string;
 }
 
 interface CartItem {
@@ -22,6 +24,8 @@ export default function Menu() {
   const [activeProducts, setActiveProducts] = useState<ProductProps[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductProps | null>(null);
   const [productClickCount, setProductClickCount] = useState<{ [key: string]: number }>({});
+  const [deleteProduct, setDeleteProduct] = useState<ProductProps | null>(null);
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -61,7 +65,48 @@ export default function Menu() {
     }
   };
   //const cartItems = convertToCartItems(clickCount, selectedProduct);
+  const getCategoryColor = (descricao: string) => {
+    switch (descricao.toLowerCase()) {
+      case 'para':
+        return 'bg-red-500';
+      case 'bebidas':
+        return 'bg-blue-500';
+      case 'acai':
+        return 'bg-purple-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
 
+  const CartCount = styled.span`
+    width: 17px;
+    height: 17px;
+    background-color: var(--count-color);
+    color: white;
+
+    position:absolute;
+    left:-10px;
+    top:50%;
+  `
+  const Container = styled.div`
+  position: relative;
+  `
+
+  const removeFromCart = (productName: string) => {
+    setProductClickCount((prevCounts) => {
+      const updatedCounts = { ...prevCounts };
+      delete updatedCounts[productName];
+      return updatedCounts;
+    });
+  };
+  const handleClearCart = () => {
+    setProductClickCount({});
+  };
+
+  const handleCancelItemClick = (productName: string) => {
+    removeFromCart(productName); 
+  };
+  //console.log('produto selecionado :', quantity);
   return (
     <div className="p-9 w-full">
       <Filtro />
@@ -69,9 +114,10 @@ export default function Menu() {
         {activeProducts.map((product, index) => (
           <div
             key={index}
-            className="w-44 h-48 flex flex-col items-center justify-center bg-gray-200 p-15 hover:scale-105"
+            className={`w-44 h-48 flex flex-col items-center justify-center p-15 hover:scale-105 ${getCategoryColor(product.descricao)}`}
             onClick={() => selectProduct(product)}
           >
+
             <img
               src={product.image}
               alt={product.name}
@@ -86,13 +132,22 @@ export default function Menu() {
         className="fixed bottom-8 right-9 bg-purple-700 hover:bg-purple-600 py-2 px-2 rounded-full"
         onClick={() => openModal()}
       >
+        <Container>
+          {Object.keys(productClickCount).length > 0 && (
+            <CartCount>
+              {Object.values(productClickCount).reduce((total, count) => total + count, 0)}
+            </CartCount>
+          )}
+        </Container>
         <img src="carrinho.png" alt="carrinho" />
       </button>
-      {isModalOpen && selectedProduct ? ( 
+      {isModalOpen && selectedProduct ? (
         <CartModal
           isOpen={isModalOpen}
           product={selectedProduct}
           cartItems={convertToCartItems(productClickCount, selectedProduct)}
+          onCancelItemClick={handleCancelItemClick}  
+          onCancelAll={handleClearCart}
           onClose={() => setIsModalOpen(false)}
         />
       ) : null}
