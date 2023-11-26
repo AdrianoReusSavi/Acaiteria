@@ -15,7 +15,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/movimentacaoEstoque")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MovimentacaoEstoqueController extends AbstractController {
     @Autowired
     private MovimentacaoEstoqueService service;
@@ -48,7 +48,7 @@ public class MovimentacaoEstoqueController extends AbstractController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody MovimentacaoEstoque entity) {
+    public ResponseEntity<MovimentacaoEstoque> update(@PathVariable("id") Long id, @RequestBody MovimentacaoEstoque entity) {
         try {
             MovimentacaoEstoque alterado = service.alterar(id, entity);
             return ResponseEntity.ok().body(alterado);

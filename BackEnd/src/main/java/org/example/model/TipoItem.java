@@ -2,8 +2,6 @@ package org.example.model;
 
 public enum TipoItem {
     ACAIS,
-    ADICIONAIS,
-    ACOMPANHAMENTOS,
+    PARA,
     BEBIDAS,
-    INSUMOS
 }
