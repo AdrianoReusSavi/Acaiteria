@@ -23,9 +23,8 @@ O principal objetivo deste projeto é criar uma plataforma intuitiva e fácil de
 ### Modelo Conceitual do Banco de Dados
 ![Modelo Conceitual](https://github.com/AdrianoReusSavi/Acaiteria/assets/104857615/33221f87-a5d2-4c39-a090-ab4ca08ecbf7)
 
-
 ### Modelo Físico do Banco de Dados
-![Modelo Banco de Dados](https://github.com/AdrianoReusSavi/Acaiteria/assets/103696544/d0b5254c-0f44-4c7c-bf5e-db6c257344c7)
+![Modelo Conceitual](https://github.com/AdrianoReusSavi/Acaiteria/assets/103696544/edd842d3-f723-467b-8080-2ed4932122c5)
 
 ## 🔖 Layout
 
