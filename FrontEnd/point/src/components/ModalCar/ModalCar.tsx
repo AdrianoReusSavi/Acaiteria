@@ -1,6 +1,4 @@
-
 import React, { useState, useEffect } from 'react';
-import { debug } from 'util';
 import axios from 'axios';
 interface ProductProps {
     id: number;
@@ -33,7 +31,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, products, cartItems, onCl
     const [mensagensDeErro, setMensagensDeErro] = useState<string[]>([]);
 
     useEffect(() => {
-        setCartItems(cartItems); // Update cartItem state when cartItems prop changes
+        setCartItems(cartItems);
     }, [cartItems]);
 
     const findCartItemIndex = (productName: string) => {
@@ -153,7 +151,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, products, cartItems, onCl
                         />
                     </div>
                 </div>
-                <div className="fixed flex bottom-52 border-t-2 py-8  items-center  space-x-96">
+                <div className="fixed flex bottom-52 border-t-2 py-8 items-center  space-x-96">
                 </div>
                 <ul className="space-y-2 border-t-2 py-8">
                     {cartItems.map((item) => (
@@ -161,14 +159,14 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, products, cartItems, onCl
                             <span>
                                 <button
                                     onClick={() => decreasequantidade(item)}
-                                    className=" text-red-400 font-bold   px-2 rounded-l-lg mr-2"
+                                    className="text-red-400 font-bold px-2 rounded-l-lg mr-2"
                                 >
                                     -
                                 </button>
                                 {item.quantidade}
                                 <button
                                     onClick={() => increasequantidade(item)}
-                                    className=" text-green-400 font-bold  px-2 rounded-r-lg ml-2 mr-2"
+                                    className="text-green-400 font-bold px-2 rounded-r-lg ml-2 mr-2"
                                 >
                                     +
                                 </button>
@@ -178,7 +176,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, products, cartItems, onCl
                             <button
                                 onClick={() => onCancelItemClick(item.id)}
 
-                                className="text-red-400 font-bold px-2 rounded-l-lg "
+                                className="text-red-400 font-bold px-2 rounded-l-lg"
                             >
                                 Remover
                             </button>
@@ -188,7 +186,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, products, cartItems, onCl
 
                 <footer className='w-{100%} inset-0 z-10'>
 
-                    <div className="fixed flex bottom-52  items-center  space-x-96">
+                    <div className="fixed flex bottom-52 items-center space-x-96">
                         <div style={{ color: 'red' }}>
                             {mensagensDeErro.length > 0 && (
                                 <div className="mensagens-de-erro">
@@ -199,7 +197,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, products, cartItems, onCl
                             )}
                         </div>
                     </div>
-                    <div className="fixed flex bottom-52 border-t-2 py-8  items-center  space-x-96">
+                    <div className="fixed flex bottom-52 border-t-2 py-8 items-center  space-x-96">
                         <div>
                             <span className="text-sm ml-2 text-gray-400 font-semibold">{totItens} Itens</span>
                         </div>
