@@ -15,7 +15,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/unidadeMedida")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UnidadeMedidaController extends AbstractController {
     @Autowired
     private UnidadeMedidaService service;

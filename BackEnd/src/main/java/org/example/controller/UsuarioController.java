@@ -16,7 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/usuario")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UsuarioController extends AbstractController {
     @Autowired
     private UsuarioService service;
@@ -62,7 +62,7 @@ public class UsuarioController extends AbstractController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Usuario entity) {
+    public ResponseEntity<Usuario> update(@PathVariable("id") Long id, @RequestBody Usuario entity) {
         try {
             Usuario alterado = service.alterar(id, entity);
             return ResponseEntity.ok().body(alterado);

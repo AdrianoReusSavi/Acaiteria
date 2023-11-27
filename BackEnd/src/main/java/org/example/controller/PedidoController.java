@@ -17,7 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/pedido")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PedidoController extends AbstractController {
     @Autowired
     private PedidoService pedidoService;

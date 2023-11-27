@@ -19,7 +19,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/api/item")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ItemController extends AbstractController {
     @Autowired
     private ItemService itemService;

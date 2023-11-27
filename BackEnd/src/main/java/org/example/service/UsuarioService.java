@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.model.QUsuario;
 import org.example.model.Usuario;
 import org.example.repository.UsuarioRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,10 @@ public class UsuarioService {
         //region Regras de negócio
         validaUsuario(entity.getLogin(), 0L);
         //endregion
+
+        String senhaCriptografada = BCrypt.hashpw(entity.getSenha(), BCrypt.gensalt());
+        entity.setSenha(senhaCriptografada);
+
         return repository.save(entity);
     }
 
@@ -57,7 +62,8 @@ public class UsuarioService {
     }
 
     public Usuario findByUserAndPassword(String user, String password) {
-        return repository.findByUserAndPassword(user, password);
+        String senhaCriptografada = BCrypt.hashpw(password, BCrypt.gensalt());
+        return repository.findByUserAndPassword(user, senhaCriptografada);
     }
 
     private void validaUsuario(String login, Long id) {

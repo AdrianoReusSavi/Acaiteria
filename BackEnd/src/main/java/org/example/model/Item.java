@@ -21,8 +21,8 @@ public class Item extends EntityId {
     @NotNull @Positive
     @Column(name = "preco_venda", nullable = false, precision = 10, scale = 2)
     private Double precoVenda;
-    @NotNull @NotBlank @Size(max = 250)
-    @Column(name = "imagem", nullable = false, length = 250)
+    @NotNull @Lob
+    @Column(name = "imagem", nullable = false, columnDefinition = "VARCHAR(MAX)")
     private String imagem;
     @NotNull @Enumerated(EnumType.STRING)
     @Column(name = "filtro", nullable = false)

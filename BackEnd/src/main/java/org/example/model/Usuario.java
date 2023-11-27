@@ -15,7 +15,7 @@ public class Usuario extends EntityId {
     @Column(name = "login", nullable = false, length = 60)
     private String login;
     @NotNull @NotBlank @Size(max = 60)
-    @Column(name = "senha", nullable = false, length = 20)
+    @Column(name = "senha", nullable = false, length = 60)
     private String senha;
     @NotNull
     @Column(name = "permissao", nullable = false)
