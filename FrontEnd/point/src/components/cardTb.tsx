@@ -31,12 +31,12 @@ const CardTb: React.FC<CardTbProps> = ({ mesaNumero, pedido, onClick }) => {
     return (
         <div
             className={`w-44 h-48 flex flex-col items-center justify-center ${corFundo} p-15 hover:scale-105`}
+            style={{ borderRadius: "50%" }}
             onClick={() => onClick(mesaNumero - 1)}
         >
             <h1 className="text-white">Mesa {mesaNumero}</h1>
         </div>
     );
 };
-
 
 export default CardTb;

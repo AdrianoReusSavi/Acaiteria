@@ -11,7 +11,7 @@ export function NavBar() {
         { title: "Estoque", src: "/stock", icone: "esto" },
         { title: "Mesa", src: "/table", icone: "tabl" },
         { title: "Fechamento", src: "/cashclosing-d", icone: "day" },
-        { title: "Balanciamento", src: "/cashclosing-m", icone: "month" },
+        { title: "Balanceamento", src: "/cashclosing-m", icone: "month" },
     ]
     return (
         <div className="relative w-72 h-screen bg-purple-800  p-5 pt-8 duration-300">
