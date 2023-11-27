@@ -69,8 +69,8 @@ const Mesa: React.FC = () => {
     }, []);
 
     return (
-        <div className="flex p-9">
-            <div className="flex flex-wrap py-7 gap-4">
+        <div className="flex p-9 items-start content-start">
+            <div className="flex flex-wrap gap-4">
                 {pedidos.map((pedido, index) => (
                     <CardTb key={index} mesaNumero={index + 1} pedido={pedido} onClick={handleMesaClick} />
                 ))}
