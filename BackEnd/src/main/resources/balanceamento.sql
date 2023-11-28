@@ -1,10 +1,10 @@
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[balanceamento]') AND type in (N'P', N'PC'))
     BEGIN
         EXEC('
-    CREATE PROCEDURE Balanceamento
-        @filter NVARCHAR(255) = NULL,
-        @page INT = 0,
-        @size INT = 15
+    CREATE PROCEDURE balanceamento
+        @DataInicial VARCHAR(10) = NULL,
+		@DataFinal VARCHAR(10) = NULL,
+		@Tipo VARCHAR(10) = NULL
     AS
     BEGIN
         SET NOCOUNT ON;
@@ -19,8 +19,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ba
             SUM(CASE WHEN me.tipo = ''SAIDA'' THEN (preco_venda - preco_compra) ELSE 0 END) AS lucro
         FROM movimentacao_estoque me
         LEFT JOIN item i ON i.id = me.item_id
-        WHERE (@filter IS NULL OR LOWER(i.descricao) LIKE LOWER(CONCAT(''%'', @filter, ''%'')))
+        WHERE ((@DataInicial IS NULL AND @DataFinal IS NULL) OR (me.data BETWEEN @DataInicial AND @DataFinal)) AND (@Tipo IS NULL OR (@Tipo = me.tipo))
         GROUP BY CONVERT(VARCHAR, me.data, 23), i.descricao, me.tipo
-        ORDER BY data OFFSET @page * @size ROWS FETCH NEXT @size ROWS ONLY;
     END')
     END;

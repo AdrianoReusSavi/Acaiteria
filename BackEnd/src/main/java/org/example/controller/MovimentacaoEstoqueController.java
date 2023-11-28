@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.dto.MovimentacaoEstoqueDTO;
 import org.example.model.Balanceamento;
+import org.example.model.Fechamento;
 import org.example.model.MovimentacaoEstoque;
 import org.example.service.MovimentacaoEstoqueService;
 import org.example.service.NotFoundException;
@@ -60,11 +61,21 @@ public class MovimentacaoEstoqueController extends AbstractController {
         }
     }
 
-    @GetMapping("/relatorio")
+    @GetMapping("/balanceamento")
     public ResponseEntity<List<Balanceamento>> balanceamento(
-            @RequestParam(required = false) String filter
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) String dataInicial,
+            @RequestParam(required = false) String dataFinal
     ) {
-        List<Balanceamento> relatorio = service.balanceamento(filter);
+        List<Balanceamento> relatorio = service.balanceamento(tipo, dataInicial, dataFinal);
         return ResponseEntity.ok(relatorio);
+    }
+
+    @GetMapping("/fechamento")
+    public ResponseEntity<List<Fechamento>> fechamento(
+            @RequestParam(required = false) String dataRelatorio
+    ) {
+        List<Fechamento> fechamento = service.fechamento(dataRelatorio);
+        return ResponseEntity.ok(fechamento);
     }
 }

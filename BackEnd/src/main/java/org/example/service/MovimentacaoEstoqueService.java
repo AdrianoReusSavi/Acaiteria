@@ -1,9 +1,6 @@
 package org.example.service;
 
-import org.example.model.Balanceamento;
-import org.example.model.Item;
-import org.example.model.MovimentacaoEstoque;
-import org.example.model.TipoMovimentacao;
+import org.example.model.*;
 import org.example.repository.MovimentacaoEstoqueRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class MovimentacaoEstoqueService {
@@ -51,32 +47,43 @@ public class MovimentacaoEstoqueService {
         return repository.save(existingMovimentacaoEstoque);
     }
 
-    @Transactional
-    public List<Balanceamento> balanceamento(String filter) {
-        try {
-            if (filter == null) {
-                filter = "";
-            }
-            List<Object[]> result = repository.balanceamento(filter);
-            return result.stream()
-                    .map(this::mapToBalanceamento)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao gerar o relatório", e);
+    public List<Balanceamento> balanceamento(String tipoMovimentacao, String dataInicial, String dataFinal) {
+        List<Object[]> resultadoProcedure = repository.balanceamento(tipoMovimentacao, dataInicial, dataFinal);
+        List<Balanceamento> balanceamentos = new ArrayList<>();
+
+        for (Object[] resultado : resultadoProcedure) {
+            Balanceamento balanceamento = getBalanceamento(resultado);
+            balanceamentos.add(balanceamento);
         }
+
+        return balanceamentos;
     }
 
-    private Balanceamento mapToBalanceamento(Object[] row) {
-        Balanceamento balanceamento = new Balanceamento();
-        balanceamento.setData((String) row[0]);
-        balanceamento.setNomeItem((String) row[1]);
-        balanceamento.setTipo(TipoMovimentacao.valueOf((String) row[2]));
-        balanceamento.setQtdCompras((Integer) row[3]);
-        balanceamento.setQtdVendas((Integer) row[4]);
-        balanceamento.setLucroBruto((Double) row[5]);
-        balanceamento.setLucro((Double) row[6]);
-        return balanceamento;
+    private static Balanceamento getBalanceamento(Object[] resultado) {
+        String data = (String) resultado[0];
+        String nomeItem = (String) resultado[1];
+        String tipo = (String) resultado[2];
+        Integer qtdCompras = (Integer) resultado[3];
+        Integer qtdVendas = (Integer) resultado[4];
+        Double lucroBruto = (Double) resultado[5];
+        Double lucro = (Double) resultado[6];
+
+        return new Balanceamento(data, nomeItem, tipo, qtdCompras, qtdVendas, lucroBruto, lucro);
+    }
+
+    public List<Fechamento> fechamento(String dataRelatorio) {
+        List<Object[]> resultadoProcedure = repository.fechamento(dataRelatorio);
+        List<Fechamento> fechamentos = new ArrayList<>();
+
+        for (Object[] resultado : resultadoProcedure) {
+            String categoria = (String) resultado[0];
+            Double totalCategoria = (Double) resultado[1];
+
+            Fechamento fechamento = new Fechamento(categoria, totalCategoria);
+            fechamentos.add(fechamento);
+        }
+
+        return fechamentos;
     }
 
     public void remover(Long id) {

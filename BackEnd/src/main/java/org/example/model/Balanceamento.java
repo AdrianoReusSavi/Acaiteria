@@ -3,7 +3,7 @@ package org.example.model;
 public class Balanceamento {
     private String data;
     private String nomeItem;
-    private TipoMovimentacao tipo;
+    private String tipo;
     private Integer qtdCompras;
     private Integer qtdVendas;
     private Double lucroBruto;
@@ -26,11 +26,11 @@ public class Balanceamento {
         this.nomeItem = nomeItem;
     }
 
-    public TipoMovimentacao getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoMovimentacao tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
@@ -66,4 +66,14 @@ public class Balanceamento {
         this.lucro = lucro;
     }
     //endregion
+
+    public Balanceamento(String data, String nomeItem, String tipo, Integer qtdCompras, Integer qtdVendas, Double lucroBruto, Double lucro) {
+        this.data = data;
+        this.nomeItem = nomeItem;
+        this.tipo = tipo;
+        this.qtdCompras = qtdCompras;
+        this.qtdVendas = qtdVendas;
+        this.lucroBruto = lucroBruto;
+        this.lucro = lucro;
+    }
 }
