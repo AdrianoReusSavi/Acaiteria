@@ -14,51 +14,33 @@ interface Balanceamento {
 
 const CashCLoM: React.FC = () => {
     const [balanceamentos, setBalanceamentos] = useState<Balanceamento[]>([]);
-    const [filteredBalanceamentos, setFilteredBalanceamentos] = useState<Balanceamento[]>([]);
-    const [filtroTipo, setFiltroTipo] = useState<string | null>(null);
-    const [filtroDataInicio, setFiltroDataInicio] = useState<string>('');
-    const [filtroDataFim, setFiltroDataFim] = useState<string>('');
-    const [pageNumber, setPageNumber] = useState(0);
-    const itemsPerPage = 10;
+    const [tipo, setTipo] = useState<string>("");
+    const [dataInicial, setDataInicial] = useState<string>("");
+    const [dataFinal, setDataFinal] = useState<string>("");
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/movimentacaoEstoque/relatorio')
+        consultar();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const consultar = () => {
+        const parametros = [];
+
+        if (dataInicial) parametros.push(`dataInicial=${encodeURIComponent(dataInicial)}`);
+        if (dataFinal) parametros.push(`dataFinal=${encodeURIComponent(dataFinal)}`);
+        if (tipo) parametros.push(`tipo=${encodeURIComponent(tipo)}`);
+
+        const url = `http://localhost:8080/api/movimentacaoEstoque/balanceamento?${parametros.join('&')}`;
+
+        axios.get(url)
             .then(response => {
                 const data = response.data;
                 setBalanceamentos(data);
-                setFilteredBalanceamentos(data);
             })
             .catch(error => {
                 console.error('Erro ao obter balanceamento:', error);
             });
-    }, []);
-
-    useEffect(() => {
-        let filteredData = balanceamentos;
-
-        if (filtroTipo) {
-            filteredData = filteredData.filter(balanceamento => balanceamento.tipo === filtroTipo);
-        }
-
-        if (filtroDataInicio && filtroDataFim) {
-            filteredData = filteredData.filter(balanceamento =>
-                balanceamento.data >= filtroDataInicio && balanceamento.data <= filtroDataFim
-            );
-        }
-
-        setFilteredBalanceamentos(filteredData);
-    }, [filtroTipo, filtroDataInicio, filtroDataFim, balanceamentos]);
-
-    const pageCount = Math.ceil(filteredBalanceamentos.length / itemsPerPage);
-
-    const handlePageChange = (newPage: number) => {
-        setPageNumber(newPage);
     };
-
-    const filteredBalanceamentosPaginated = filteredBalanceamentos.slice(
-        pageNumber * itemsPerPage,
-        (pageNumber + 1) * itemsPerPage
-    );
 
     return (
         <div className="w-full mt-8">
@@ -66,24 +48,27 @@ const CashCLoM: React.FC = () => {
                 <label className="text-gray-600">Tipo:</label>
                 <select
                     className="border rounded-md px-2 py-1 focus:outline-none"
-                    onChange={(e) => setFiltroTipo(e.target.value)}
+                    onChange={(e) => setTipo(e.target.value)}
                 >
                     <option value="">Todos</option>
+                    <option value="ENTRADA">Entrada</option>
+                    <option value="SAIDA">Saída</option>
                 </select>
                 <label className="text-gray-600">Data Inicial:</label>
                 <input
                     className="border rounded-md px-2 py-1 focus:outline-none"
                     type="date"
-                    value={filtroDataInicio}
-                    onChange={(e) => setFiltroDataInicio(e.target.value)}
+                    value={dataInicial}
+                    onChange={(e) => setDataInicial(e.target.value)}
                 />
                 <label className="text-gray-600">Data Final:</label>
                 <input
                     className="border rounded-md px-2 py-1 focus:outline-none"
                     type="date"
-                    value={filtroDataFim}
-                    onChange={(e) => setFiltroDataFim(e.target.value)}
+                    value={dataFinal}
+                    onChange={(e) => setDataFinal(e.target.value)}
                 />
+                <button className="bg-red-400 hover:bg-gray-350 px-4 py-2 rounded mr-4" onClick={consultar}>Consultar</button>
             </div>
             <table className="w-full">
                 <thead className="bg-gray-200">
@@ -98,7 +83,7 @@ const CashCLoM: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredBalanceamentosPaginated.map((balanceamento, index) => (
+                    {balanceamentos.map((balanceamento, index) => (
                         <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
                             <td className="p-4 border-r border-gray-300">{balanceamento.data}</td>
                             <td className="p-4 border-r border-gray-300">{balanceamento.nomeItem}</td>
@@ -121,17 +106,6 @@ const CashCLoM: React.FC = () => {
                     ))}
                 </tbody>
             </table>
-            <div className="flex items-center space-x-4 mt-4">
-                {Array.from({ length: pageCount }).map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => handlePageChange(index)}
-                        className={`border rounded-md px-3 py-1 focus:outline-none ${pageNumber === index ? 'bg-blue-500 text-white' : 'text-blue-500'}`}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-            </div>
         </div>
     );
 }
