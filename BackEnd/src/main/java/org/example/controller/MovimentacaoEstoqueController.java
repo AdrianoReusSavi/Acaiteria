@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.dto.MovimentacaoEstoqueDTO;
+import org.example.model.Balanceamento;
 import org.example.model.MovimentacaoEstoque;
 import org.example.service.MovimentacaoEstoqueService;
 import org.example.service.NotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/movimentacaoEstoque")
@@ -56,5 +58,13 @@ public class MovimentacaoEstoqueController extends AbstractController {
         catch (NotFoundException nfe) {
             return ResponseEntity.noContent().build();
         }
+    }
+
+    @GetMapping("/relatorio")
+    public ResponseEntity<List<Balanceamento>> balanceamento(
+            @RequestParam(required = false) String filter
+    ) {
+        List<Balanceamento> relatorio = service.balanceamento(filter);
+        return ResponseEntity.ok(relatorio);
     }
 }
