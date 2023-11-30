@@ -1,0 +1,72 @@
+
+        .body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: left;
+        }
+
+        nav {
+            background-color: #A020F0;
+            color: #000000;
+            padding: 10px;
+            text-align: left;
+        }
+
+        section {
+            padding: 20px 10px 25px 50px;
+            line-height: 30px;
+            display: table;
+            margin: 0 auto;
+            justify-content: center;
+            align-items: center;
+            border-collapse: collapse;
+            height: 35px;
+        }
+
+        table {
+            font-family: Arial;
+            border-collapse: collapse;
+            padding-top: 15px;
+            padding-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: grey;
+            width: 100%;
+        }
+
+        td {
+            background-color: white;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        article {
+            margin-bottom: 20px;
+        }
+
+        form {
+            padding: 20px 10px 25px 50px;
+            display: table;
+            margin: 0 auto;
+            justify-content: center;
+            align-items: center;
+            border-collapse: collapse;
+            text-align: center;
+        }
