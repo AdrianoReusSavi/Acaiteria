@@ -1,3 +1,21 @@
-export default function CashCLoD(){
-    return(<h1>ESTA NA FECHAMENTO DO CAIXA DO dia TODO</h1>)
+import MuiTable from "@/components/report/MuiTable"
+import React from 'react';
+import Date from "@/components/report/Date";
+
+    export default function CashClosing(){
+        const DadosdaTabela = [ ];
+        const Dados = [ ];
+
+            return (
+                <div>
+                    <h1>Vendas</h1>
+                    <Date data={Dados} />
+                    <MuiTable data={DadosdaTabela} />
+                </div>
+        );
 }
+
+
+
+
+    
