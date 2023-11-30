@@ -1,0 +1,29 @@
+/* Estilo para a tabela */
+.Table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  height:200px;
+  border:200px;
+  padding:10px;
+  box-sizing: border-box;
+}
+
+/* Estilo para as células da tabela */
+.cell {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Estilo para o cabeçalho da tabela */
+.TableRow {
+  background-color: purple;
+  color: white;
+}
+
+/* Estilo para alternar as cores das linhas da tabela */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
