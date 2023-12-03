@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import ToggleSwitch from "@/components/switch";
 
+
 interface ProductProps {
+  id: number;
   name: string;
-  vlrfl: string;
+  vlrfl: number;
   image: string;
   descricao: string;
-  quantidade: string;
+  quantidade: number;
   checked: boolean;
 }
 
@@ -17,21 +19,28 @@ interface ModalProductProps {
   deleteProductHandler: (productToDelete: ProductProps) => void;
 }
 
-const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmit, editProduct, deleteProductHandler }) => {
+const ModalProduct: React.FC<ModalProductProps> = ({
+  closeModal,
+  handleFormSubmit,
+  editProduct,
+  deleteProductHandler,
+}) => {
+  const [id, setId] = useState<number>(0);
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [quantidade, setQuantidade] = useState("");
-  const [vlrfl, setVlrFl] = useState("");
+  const [quantidade, setQuantidade] = useState(0);
+  const [vlrfl, setVlrFl] = useState(0);
   const [pic, setPic] = useState("");
   const [checked, setChecked] = useState(false);
   const [deleteProduct, setDeleteProduct] = useState(false);
 
   useEffect(() => {
     if (editProduct) {
+      setId(editProduct.id);
       setNome(editProduct.name);
       setQuantidade(editProduct.quantidade);
       setVlrFl(editProduct.vlrfl);
-      setDescricao(editProduct.descricao)
+      setDescricao(editProduct.descricao);
       setPic(editProduct.image);
       setChecked(editProduct.checked);
     }
@@ -40,6 +49,11 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
   const handleDeleteClick = () => {
     setDeleteProduct(true);
   };
+
+  function gerarId()  {
+    const numeroAleatorio = Math.floor(Math.random() * 1000);
+    return numeroAleatorio;
+  }
 
   useEffect(() => {
     if (deleteProduct && editProduct) {
@@ -50,26 +64,28 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log();
 
     const newProduct: ProductProps = {
+      id: editProduct ? id : gerarId(), 
       name: nome,
-      vlrfl: vlrfl,
+      vlrfl: parseFloat(vlrfl.toString()), 
       image: pic,
-      quantidade: quantidade,
+      quantidade: parseInt(quantidade.toString()),
       descricao: descricao,
       checked: checked,
-
     };
+
     handleFormSubmit(newProduct);
+    console.log('id do produto :', newProduct);
+
     resetInputs();
   };
 
   const resetInputs = () => {
     setNome("");
     setDescricao("");
-    setQuantidade("");
-    setVlrFl("");
+    setQuantidade(0);
+    setVlrFl(0);
     setPic("");
   };
 
@@ -87,6 +103,7 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
       reader.readAsDataURL(file);
     }
   };
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-end pt-9 pb-9 ">
@@ -117,6 +134,7 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
               >
                 <option value="">Sem categoria</option>
                 <option value="acai">Acaí</option>
+                <option value="acompanhamento">Acompanhamento</option>
                 <option value="para">Pará</option>
                 <option value="bebidas">Bebidas</option>
               </select>
@@ -126,19 +144,16 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
               <input
                 type="number"
                 value={quantidade}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuantidade(event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuantidade(Number(event.target.value))}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none"
               />
             </div>
             <div className="w-1/2 mb-4 pl-2">
               <label className="block">Valor Final</label>
               <input
-                type="text"
+                type="number"
                 value={vlrfl}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  const newValue = event.target.value.replace(/[^0-9.]/g, '');
-                  setVlrFl(newValue);
-                }}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setVlrFl(Number(event.target.value))}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none"
               />
             </div>
@@ -156,12 +171,13 @@ const ModalProduct: React.FC<ModalProductProps> = ({ closeModal, handleFormSubmi
               <label className="mr-2">Vai para o cardapio?</label>
               <ToggleSwitch checked={checked} onChange={() => setChecked(!checked)} />
             </div>
+
           </div>
           <div className="fixed flex bottom-12 right-12 space-x-8">
-            {editProduct &&(
-            <div>
-              <button className="bg-red-400 hover:bg-gray-350 px-4 py-2 rounded mr-4" onClick={handleDeleteClick}>Trash</button>
-            </div>
+            {editProduct && (
+              <div>
+                <button className="bg-red-400 hover:bg-gray-350 px-4 py-2 rounded mr-4" onClick={handleDeleteClick}>Trash</button>
+              </div>
             )}
             <div>
               <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded mr-4" onClick={closeModal}>

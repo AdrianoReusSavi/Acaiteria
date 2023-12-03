@@ -4,10 +4,11 @@ import ModalProduct from "@/components/ModalStock/Modalproduct";
 import Filtro from "@/components/Navbartb/Filtro";
 
 interface ProductProps {
+  id: number;
   name: string;
-  vlrfl: string;
+  vlrfl: number;
   image: string;
-  quantidade: string;
+  quantidade: number;
   checked: boolean;
   descricao:string;
 }
@@ -16,7 +17,7 @@ const Stock = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [editProduct, setEditProduct] = useState<ProductProps | null>(null);
-  const [deleteProduct, setDeleteProduct] = useState<ProductProps | null>(null);
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -96,7 +97,7 @@ const Stock = () => {
           >
             <img src={product.image} alt={product.name} className="w-20 h-22 mb-2" />
             <h3 className="text-xl font-bold">{product.name}</h3>
-            <h3 className="text-xl">{product.vlrfl}</h3>
+            <h3 className="text-xl">R${product.vlrfl}</h3>
             <p className="text-gray-600">{product.quantidade}</p>
           </div>
         ))}
