@@ -21,7 +21,6 @@ interface PedidoItens {
 }
 
 const Mesa: React.FC = () => {
-    debugger;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pedidoSelecionado, setPedidoSelecionado] = useState<number>(0);
 
@@ -46,7 +45,6 @@ const Mesa: React.FC = () => {
     };
 
     const handleMesaClick = (index: number) => {
-        debugger;
         console.log(pedidos);
         console.log(pedidos[pedidoSelecionado]);
         setPedidoSelecionado(index);
@@ -54,7 +52,6 @@ const Mesa: React.FC = () => {
     };
 
     const saveAndCloseModal = (updatedPedido: Pedido) => {
-        debugger;
         const updatedPedidos = pedidos.map((p, index) => (index === pedidoSelecionado ? updatedPedido : p));
         setPedidos(updatedPedidos);
         localStorage.setItem("pedidos", JSON.stringify(updatedPedidos));

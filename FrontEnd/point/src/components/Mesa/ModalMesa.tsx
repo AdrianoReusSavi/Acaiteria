@@ -41,7 +41,6 @@ interface Item {
 }
 
 const DetalhesPedido: React.FC<DetalhesPedidoProps> = ({ pedido, onSave, onCancel }) => {
-    debugger;
     const [cliente, setCliente] = useState(pedido.cliente);
     const [desconto, setDesconto] = useState(0);
     const [activeProducts, setActiveProducts] = useState<ProductProps[]>([]);
@@ -114,7 +113,6 @@ const DetalhesPedido: React.FC<DetalhesPedidoProps> = ({ pedido, onSave, onCance
     };
 
     const removerItemDoPedido = (descricao: string) => {
-        debugger;
         const updatedSelectedProducts = selectedProducts.filter((item) => item.descricao !== descricao);
         setSelectedProducts(updatedSelectedProducts);
     };

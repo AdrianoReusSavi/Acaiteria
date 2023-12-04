@@ -1,4 +1,5 @@
 ﻿'use client'
+import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material'
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
@@ -70,42 +71,37 @@ const CashCLoM: React.FC = () => {
                 />
                 <button className="bg-red-400 hover:bg-gray-350 px-4 py-2 rounded mr-4" onClick={consultar}>Consultar</button>
             </div>
-            <table className="w-full">
-                <thead className="bg-gray-200">
-                    <tr>
-                        <th className="p-4 text-left border-r border-gray-300 w-1/7">Data</th>
-                        <th className="p-4 text-left border-r border-gray-300 w-1/7">Produto</th>
-                        <th className="p-4 text-left border-r border-gray-300 w-1/7">Movimentação</th>
-                        <th className="p-4 text-left border-r border-gray-300 w-1/7">Quantidade Compras</th>
-                        <th className="p-4 text-left border-r border-gray-300 w-1/7">Quantidade Vendas</th>
-                        <th className="p-4 text-left border-r border-gray-300 w-1/7">Lucro Bruto</th>
-                        <th className="p-4 text-left w-1/7">Lucro</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {balanceamentos.map((balanceamento, index) => (
-                        <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-                            <td className="p-4 border-r border-gray-300">{balanceamento.data}</td>
-                            <td className="p-4 border-r border-gray-300">{balanceamento.nomeItem}</td>
-                            <td className="p-4 border-r border-gray-300">{balanceamento.tipo}</td>
-                            <td className="p-4 border-r border-gray-300">{balanceamento.qtdCompras}</td>
-                            <td className="p-4 border-r border-gray-300">{balanceamento.qtdVendas}</td>
-                            <td className="p-4 border-r border-gray-300">
-                                {balanceamento.lucroBruto.toLocaleString('pt-BR', {
-                                    style: 'currency',
-                                    currency: 'BRL',
-                                })}
-                            </td>
-                            <td className="p-4 border-r border-gray-300">
-                                {balanceamento.lucro.toLocaleString('pt-BR', {
-                                    style: 'currency',
-                                    currency: 'BRL',
-                                })}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <TableContainer component={Paper} sx={{ maxHeight: '800px' }}>
+                <Table aria-label='simple table' stickyHeader>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell className='column'>Data</TableCell>
+                            <TableCell className='column'>Produto</TableCell>
+                            <TableCell className='column'>Movimentação</TableCell>
+                            <TableCell className='column'>Quantidade Compras</TableCell>
+                            <TableCell className='column'>Quantidade Vendas</TableCell>
+                            <TableCell className='column'>Lucro Bruto</TableCell>
+                            <TableCell className='column'>Lucro</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {balanceamentos.map((balanceamento, index) => (
+                            <TableRow
+                                key={index}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                <TableCell className='cell'>{balanceamento.data}</TableCell>
+                                <TableCell className='cell'>{balanceamento.nomeItem}</TableCell>
+                                <TableCell className='cell'>{balanceamento.tipo}</TableCell>
+                                <TableCell className='cell'>{balanceamento.qtdCompras}</TableCell>
+                                <TableCell className='cell'>{balanceamento.qtdVendas}</TableCell>
+                                <TableCell className='cell'>{balanceamento.lucroBruto.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL',})}</TableCell>
+                                <TableCell className='cell'>{balanceamento.lucro.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL',})}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     );
 }

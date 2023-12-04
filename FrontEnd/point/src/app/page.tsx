@@ -35,20 +35,17 @@ export default function Menu() {
     };
 
     const selectProduct = (product: ProductProps) => {
-        // Verificar se o produto já está na lista
         const isProductAlreadySelected = selectedProducts?.some((p) => p.id === product.id);
 
         if (!isProductAlreadySelected) {
             const updatedSelectedProducts = selectedProducts ? [...selectedProducts, product] : [product];
             setSelectedProducts(updatedSelectedProducts);
 
-            // Iniciar a quantidade com 1 ao adicionar um novo produto
             setProductClickCount((prevCounts) => ({
                 ...prevCounts,
                 [product.id]: 1,
             }));
         } else {
-            // Se o produto já estiver na lista, apenas incrementar a quantidade
             setProductClickCount((prevCounts) => ({
                 ...prevCounts,
                 [product.id]: (prevCounts[product.id] || 0) + 1,
@@ -60,17 +57,9 @@ export default function Menu() {
         const savedData = localStorage.getItem("stockData");
         if (savedData) {
             const parsedData: ProductProps[] = JSON.parse(savedData);
-            const filteredProducts = parsedData.filter((product) => product.ativo);
+            const filteredProducts = parsedData.filter((product) => product.ativo && product.quantidadeEstoque > 0);
             setActiveProducts(filteredProducts);
         }
-        //        fetch('http://localhost:8080/api/item')
-        //            .then((response) => response.json())
-        //            .then((data) => {
-        //                setActiveProducts(data.content);
-        //            })
-        //             .catch((error) => {
-        //                console.error('Erro ao buscar os produtos:', error);
-        //            });
     }, []);
 
     const convertToCartItems = (clickCount: { [key: number]: number }, selectedProducts: ProductProps[] | null): CartItem[] => {
@@ -92,7 +81,6 @@ export default function Menu() {
         }
     };
 
-    //const cartItems = convertToCartItems(clickCount, selectedProduct);
     const getCategoryColor = (filtro: string) => {
         switch (filtro.toLowerCase()) {
             case 'para':
@@ -135,7 +123,6 @@ export default function Menu() {
             const updatedCounts = { ...prevCounts };
             delete updatedCounts[id];
 
-            // Verifica se ambas as listas estão vazias
             if (Object.keys(updatedCounts).length === 0 && (!newProducts || newProducts.length === 0)) {
                 setIsModalOpen(false);
             }
@@ -145,7 +132,6 @@ export default function Menu() {
     };
 
     const handleCartItemUpdate = (updatedCartItems: CartItem[]) => {
-        // Atualizar productClickCount com base nas quantidades dos itens atualizadas
         const updatedClickCount: { [key: number]: number } = {};
 
         updatedCartItems.forEach((item) => {
@@ -155,7 +141,6 @@ export default function Menu() {
         setProductClickCount(updatedClickCount);
     };
 
-    //console.log('produto selecionado :', quantidadeEstoque);
     return (
         <div className="p-9 w-full">
             <Filtro />
