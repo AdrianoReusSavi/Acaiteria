@@ -33,6 +33,18 @@ public class PedidoController extends AbstractController {
 
     @PostMapping
     public ResponseEntity<Pedido> create(@RequestBody @Valid Pedido entity) {
+        for(PedidoItem pedidoItem: entity.getPedidoItens()) {
+            Long itemId = pedidoItem.getItem().getId();
+            Item item = itemService.buscaPorId(itemId);
+
+            Integer quantidadePedido = pedidoItem.getQuantidade();
+            int qtd = (item.getQuantidadeEstoque() - quantidadePedido);
+
+            if(qtd < 0) {
+                throw new ValidationException(String.format("Quantidade %s indisponível!", item.getDescricao()));
+            }
+        }
+
         Pedido save = pedidoService.salvar(entity);
 
         for(PedidoItem pedidoItem : entity.getPedidoItens()) {

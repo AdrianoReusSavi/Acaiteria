@@ -9,7 +9,7 @@ EXEC('
 
             SELECT
                 ''Açaís'' AS categoria,
-                SUM(pi.quantidade * pi.valor_venda) AS totalCategoria
+                SUM(pi.valor_venda) AS totalCategoria
             FROM
                 Pedido p
                 JOIN pedido_item pi ON p.id = pi.pedido_id
@@ -22,7 +22,7 @@ EXEC('
 
             SELECT
                 ''Para'' AS categoria,
-                SUM(pi.quantidade * pi.valor_venda) AS totalCategoria
+                SUM(pi.valor_venda) AS totalCategoria
             FROM
                 Pedido p
                 JOIN pedido_item pi ON p.id = pi.pedido_id
@@ -35,7 +35,7 @@ EXEC('
 
             SELECT
                 ''Bebidas'' AS categoria,
-                SUM(pi.quantidade * pi.valor_venda) AS totalCategoria
+                SUM(pi.valor_venda) AS totalCategoria
             FROM
                 Pedido p
                 JOIN pedido_item pi ON p.id = pi.pedido_id
@@ -48,7 +48,7 @@ EXEC('
 
             SELECT
                 ''Total Geral'' AS categoria,
-                SUM(pi.quantidade * pi.valor_venda) AS TotalGeral
+                SUM(pi.valor_venda) AS TotalGeral
             FROM
                 Pedido p
                 JOIN pedido_item pi ON p.id = pi.pedido_id

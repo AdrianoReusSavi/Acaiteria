@@ -48,6 +48,9 @@ public class ItemService {
         modelMapper.map(entity, existingItem);
         //region Regras de negócio
         validaItem(entity.getDescricao(), id);
+        if(entity.getQuantidadeEstoque() < 0) {
+            throw new ValidationException("Quantidade indisponível!");
+        }
         //endregion
         return repository.save(existingItem);
     }
