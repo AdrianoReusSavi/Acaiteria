@@ -5,18 +5,20 @@ import Filtro from "@/components/Navbartb/Filtro";
 import { styled } from "styled-components";
 
 interface ProductProps {
+  id: number;
   name: string;
   vlrfl: number;
   image: string;
   checked: boolean;
-  price: number;
   descricao: string;
 }
 
 interface CartItem {
+  id: number;
   name: string;
-  price: number;
+  vlrfl: number;
   quantity: number;
+  descricao: string;
 }
 
 export default function Menu() {
@@ -24,16 +26,24 @@ export default function Menu() {
   const [activeProducts, setActiveProducts] = useState<ProductProps[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductProps | null>(null);
   const [productClickCount, setProductClickCount] = useState<{ [key: string]: number }>({});
-  const [deleteProduct, setDeleteProduct] = useState<ProductProps | null>(null);
-
 
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  const selectProduct = (product: ProductProps) => {
-    setSelectedProduct({ ...product, price: product.vlrfl });
-    handleProductClick(product.name);
+  const convertToCartItems = (clickCount: { [key: string]: number }, selectedProduct: ProductProps | null): CartItem[] => {
+    if (selectedProduct) {
+      const cartItems: CartItem[] = Object.entries(clickCount).map(([name, quantity]) => ({
+        id: selectedProduct.id,
+        name,
+        vlrfl: selectedProduct.vlrfl,
+        quantity,
+        descricao:selectedProduct.descricao
+      }));
+      return cartItems;
+    } else {
+      return [];
+    }
   };
 
   const handleProductClick = (productName: string) => {
@@ -52,19 +62,13 @@ export default function Menu() {
     }
   }, []);
 
-  const convertToCartItems = (clickCount: { [key: string]: number }, selectedProduct: ProductProps | null): CartItem[] => {
-    if (selectedProduct) {
-      const cartItems: CartItem[] = Object.entries(clickCount).map(([name, quantity]) => ({
-        name,
-        price: selectedProduct.price,
-        quantity,
-      }));
-      return cartItems;
-    } else {
-      return [];
-    }
+    const selectProduct = (product: ProductProps) => {
+    setSelectedProduct({ ...product, vlrfl: product.vlrfl });
+    handleProductClick(product.name);
   };
-  //const cartItems = convertToCartItems(clickCount, selectedProduct);
+
+
+  
   const getCategoryColor = (descricao: string) => {
     switch (descricao.toLowerCase()) {
       case 'para':
@@ -92,20 +96,6 @@ export default function Menu() {
   position: relative;
   `
 
-  const removeFromCart = (productName: string) => {
-    setProductClickCount((prevCounts) => {
-      const updatedCounts = { ...prevCounts };
-      delete updatedCounts[productName];
-      return updatedCounts;
-    });
-  };
-  const handleClearCart = () => {
-    setProductClickCount({});
-  };
-
-  const handleCancelItemClick = (productName: string) => {
-    removeFromCart(productName); 
-  };
   //console.log('produto selecionado :', quantity);
   return (
     <div className="p-9 w-full">
@@ -117,7 +107,6 @@ export default function Menu() {
             className={`w-44 h-48 flex flex-col items-center justify-center p-15 hover:scale-105 ${getCategoryColor(product.descricao)}`}
             onClick={() => selectProduct(product)}
           >
-
             <img
               src={product.image}
               alt={product.name}
@@ -145,9 +134,7 @@ export default function Menu() {
         <CartModal
           isOpen={isModalOpen}
           product={selectedProduct}
-          cartItems={convertToCartItems(productClickCount, selectedProduct)}
-          onCancelItemClick={handleCancelItemClick}  
-          onCancelAll={handleClearCart}
+          cartItems={convertToCartItems(productClickCount,selectedProduct)}
           onClose={() => setIsModalOpen(false)}
         />
       ) : null}

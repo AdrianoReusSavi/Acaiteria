@@ -1,15 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
 interface ProductProps {
+  id: number;
   name: string;
   vlrfl: number;
-  price: number;
+  descricao: string;
 }
 
 interface CartItem {
+  id: number;
   name: string;
-  price: number;
   quantity: number;
+  descricao: string;
+  vlrfl: number;
 }
 
 interface CartModalProps {
@@ -21,48 +24,40 @@ interface CartModalProps {
   onCancelAll:()=>void;
 }
 
-const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClose, onCancelItemClick, onCancelAll }) => {
+const CartModal: React.FC<CartModalProps> = ({ product, cartItems, onClose, onCancelItemClick, onCancelAll }) => {
   const [cartItem, setCartItems] = useState<CartItem[]>(cartItems);
-  const [deleteProduct, setDeleteProduct] = useState(false);
 
   useEffect(() => {
-    setCartItems(cartItems); // Update cartItem state when cartItems prop changes
+    setCartItems(cartItems); 
   }, [cartItems]);
 
   const findCartItemIndex = (productName: string) => {
     return cartItem.findIndex((item) => item.name === productName);
   };
 
-  
   const decreaseQuantity = (item: CartItem) => {
     const itemIndex = findCartItemIndex(item.name);
     if (itemIndex !== -1) {
-      const updatedCartItems = [...cartItem];
+      const updatedCartItems = [...cartItems];
       updatedCartItems[itemIndex].quantity -= 1;
       setCartItems(updatedCartItems);
     }
   };
 
-  const increaseQuantity = (item: CartItem) => {
-    const itemIndex = findCartItemIndex(item.name);
-    if (itemIndex !== -1) {
-      const updatedCartItems = [...cartItem];
-      updatedCartItems[itemIndex].quantity += 1;
-      setCartItems(updatedCartItems);
-    }
-  };
-
-  const handleDeleteClick = (itemName: string) => {
-    const updatedCartItems = cartItem.filter((item) => item.name !== itemName);
-    setCartItems(updatedCartItems);
-  };
+    const increaseQuantity = (item: CartItem) => {
+      const itemIndex = findCartItemIndex(item.name);
+      if (itemIndex !== -1) {
+        const updatedCartItems = [...cartItem];
+        updatedCartItems[itemIndex].quantity += 1;
+        setCartItems(updatedCartItems);
+      }
+    };
+    
 
  
-
-
-  const total = cartItem.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = cartItem.reduce((acc, item) => acc + item.vlrfl * item.quantity, 0);
   const totItens = cartItem.reduce((acc, item) => acc + item.quantity, 0);
-  //console.log('Valores iniciais do carrinho:', cartItems);
+  console.log('Valores iniciais do carrinho:', cartItems);
   return (
     <div className="fixed inset-0 flex items-center justify-end pt-9 pb-9 ">
       <div className="z-2 absolute inset-0 bg-gray-800 opacity-50" />
@@ -80,18 +75,15 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
                 {item.quantity}
                 <button
                   onClick={() => increaseQuantity(item)}
-                  className=" text-green-400 font-bold  px-2 rounded-r-lg ml-2 mr-2"
-                >
+                  className=" text-green-400 font-bold  px-2 rounded-r-lg ml-2 mr-2">
                   +
                 </button>
                 {item.name}
               </span>
-              <span>R${item.price}  x</span>
+              <span className='fixed ml-96'>R${item.vlrfl}  x</span>
               <button
                 onClick={() => onCancelItemClick(item.name)}
-
-                className="text-red-400 font-bold px-2 rounded-l-lg "
-              >
+                className=" text-red-400 font-bold  rounded-l-lg ">
                 Remover
               </button>
             </li>
@@ -112,17 +104,17 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, product, cartItems, onClo
           <div className="fixed flex bottom-12 right-12 space-x-8">
             <div>
               <button
-                className="bg-red-400 hover:bg-gray-350 px-4 py-2 rounded mr-4"
+                className="bg-red-500 hover:bg-red-400 px-4 py-2 rounded mr-4"
                 onClick={onCancelAll}>
                 Remover Todos
               </button>
             </div>
 
             <div>
-              <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded mr-4" onClick={onClose}>
+              <button className="bg-gray-500 hover:bg-gray-400 px-4 py-2 rounded mr-4" onClick={onClose}>
                 Fechar Modal
               </button>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" type="submit">
+              <button className="bg-green-500 hover:bg-green-400 text-white px-4 py-2 rounded" type="submit">
                 PAGAR
               </button>
             </div>
