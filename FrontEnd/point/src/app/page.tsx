@@ -26,6 +26,7 @@ export default function Menu() {
   const [activeProducts, setActiveProducts] = useState<ProductProps[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductProps | null>(null);
   const [productClickCount, setProductClickCount] = useState<{ [key: string]: number }>({});
+  
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -38,7 +39,7 @@ export default function Menu() {
         name,
         vlrfl: selectedProduct.vlrfl,
         quantity,
-        descricao:selectedProduct.descricao
+        descricao: selectedProduct.descricao
       }));
       return cartItems;
     } else {
@@ -62,13 +63,27 @@ export default function Menu() {
     }
   }, []);
 
-    const selectProduct = (product: ProductProps) => {
+  const selectProduct = (product: ProductProps) => {
     setSelectedProduct({ ...product, vlrfl: product.vlrfl });
     handleProductClick(product.name);
   };
 
 
-  
+
+  const removeItem = (productName: string) => {
+    setProductClickCount((prevCounts) => {
+      const updatedCounts = { ...prevCounts };
+      delete updatedCounts[productName];
+      return updatedCounts;
+    });
+  };
+
+  const clearCart = () => {
+    setProductClickCount({});
+  };
+
+ 
+
   const getCategoryColor = (descricao: string) => {
     switch (descricao.toLowerCase()) {
       case 'para':
@@ -134,7 +149,9 @@ export default function Menu() {
         <CartModal
           isOpen={isModalOpen}
           product={selectedProduct}
-          cartItems={convertToCartItems(productClickCount,selectedProduct)}
+          cartItems={convertToCartItems(productClickCount, selectedProduct)}
+          onRemoveItem={removeItem}
+          onClearCart={clearCart}
           onClose={() => setIsModalOpen(false)}
         />
       ) : null}

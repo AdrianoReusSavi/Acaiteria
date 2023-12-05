@@ -20,11 +20,11 @@ interface CartModalProps {
   product: ProductProps | null;
   cartItems: CartItem[];
   onClose: () => void;
-  onCancelItemClick: (productName: string) => void;
-  onCancelAll:()=>void;
+onRemoveItem: (productName: string) => void;
+onClearCart: ()=>void;
 }
 
-const CartModal: React.FC<CartModalProps> = ({ product, cartItems, onClose, onCancelItemClick, onCancelAll }) => {
+const CartModal: React.FC<CartModalProps> = ({ product, cartItems, onRemoveItem, onClearCart, onClose}) => {
   const [cartItem, setCartItems] = useState<CartItem[]>(cartItems);
 
   useEffect(() => {
@@ -53,7 +53,11 @@ const CartModal: React.FC<CartModalProps> = ({ product, cartItems, onClose, onCa
       }
     };
     
-
+    const removeAllItems = () => {
+      setCartItems([]);
+      onClearCart();
+    };
+  
  
   const total = cartItem.reduce((acc, item) => acc + item.vlrfl * item.quantity, 0);
   const totItens = cartItem.reduce((acc, item) => acc + item.quantity, 0);
@@ -82,7 +86,7 @@ const CartModal: React.FC<CartModalProps> = ({ product, cartItems, onClose, onCa
               </span>
               <span className='fixed ml-96'>R${item.vlrfl}  x</span>
               <button
-                onClick={() => onCancelItemClick(item.name)}
+              onClick={() => onRemoveItem(item.name)}
                 className=" text-red-400 font-bold  rounded-l-lg ">
                 Remover
               </button>
@@ -104,8 +108,9 @@ const CartModal: React.FC<CartModalProps> = ({ product, cartItems, onClose, onCa
           <div className="fixed flex bottom-12 right-12 space-x-8">
             <div>
               <button
+              onClick={removeAllItems} 
                 className="bg-red-500 hover:bg-red-400 px-4 py-2 rounded mr-4"
-                onClick={onCancelAll}>
+                >
                 Remover Todos
               </button>
             </div>
