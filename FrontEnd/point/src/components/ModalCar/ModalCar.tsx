@@ -109,14 +109,14 @@ const CartModal: React.FC<CartModalProps> = ({ product, cartItems, onRemoveItem,
             <div>
               <button
               onClick={removeAllItems} 
-                className="bg-red-500 hover:bg-red-400 px-4 py-2 rounded mr-4"
+                className="bg-red-500 hover:bg-red-400 text-white  px-4 py-2 rounded mr-4"
                 >
                 Remover Todos
               </button>
             </div>
 
             <div>
-              <button className="bg-gray-500 hover:bg-gray-400 px-4 py-2 rounded mr-4" onClick={onClose}>
+              <button className="bg-gray-500 hover:bg-gray-400 text-white  px-4 py-2 rounded mr-4" onClick={onClose}>
                 Fechar Modal
               </button>
               <button className="bg-green-500 hover:bg-green-400 text-white px-4 py-2 rounded" type="submit">
